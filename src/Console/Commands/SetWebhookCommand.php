@@ -9,14 +9,14 @@ use Appto\TelegramBot\Client\TelegramClient;
 use Appto\TelegramBot\Client\TelegramClientFactory;
 use Appto\TelegramBot\Console\Output\ChoiceBotPrompt;
 use Appto\TelegramBot\Console\Output\WebhookPrompts;
-use Illuminate\Console\Attributes\Description;
-use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('telegram:set-webhook {bot?}')]
-#[Description('Registers the bot\'s webhook URL with Telegram')]
 final class SetWebhookCommand extends Command
 {
+    protected $signature = 'telegram:set-webhook {bot?}';
+
+    protected $description = 'Registers the bot\'s webhook URL with Telegram';
+
     /**
      * Execute the console command.
      */

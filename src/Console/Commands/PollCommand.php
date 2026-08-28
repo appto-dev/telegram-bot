@@ -21,23 +21,23 @@ use Appto\TelegramBot\Type\Update;
 use Appto\TelegramBot\Update\UpdateContext;
 use Appto\TelegramBot\Update\UpdateType;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Console\Attributes\Description;
-use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
 
 use function Laravel\Prompts\intro;
 
-#[Signature('telegram:poll {bot?}
-    {--timeout=30 : Timeout in seconds}
-    {--o|show-outgoing : Also show outgoing bot replies}
-    {--only=* : Only show/log these update types (message, callback_query, ...)}
-    {--user=* : Only show/log updates from these Telegram user IDs}
-    {--dry-run : Receive updates without dispatching them to the bot}
-    {--l|--log-traffic : Log raw incoming/outgoing payloads to storage/logs/telegram-traffic.log}')]
-#[Description('Polls the bot for updates via long polling (dev mode, no webhook required)')]
 final class PollCommand extends Command
 {
+    protected $signature = 'telegram:poll {bot?}
+        {--timeout=30 : Timeout in seconds}
+        {--o|show-outgoing : Also show outgoing bot replies}
+        {--only=* : Only show/log these update types (message, callback_query, ...)}
+        {--user=* : Only show/log updates from these Telegram user IDs}
+        {--dry-run : Receive updates without dispatching them to the bot}
+        {--l|--log-traffic : Log raw incoming/outgoing payloads to storage/logs/telegram-traffic.log}';
+
+    protected $description = 'Polls the bot for updates via long polling (dev mode, no webhook required)';
+
     private const int DEFAULT_SLEEP_TIMEOUT = 5;
 
     /**

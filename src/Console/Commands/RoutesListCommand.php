@@ -9,15 +9,15 @@ use Appto\TelegramBot\Bot\BotManager;
 use Appto\TelegramBot\Console\Output\ChoiceBotPrompt;
 use Appto\TelegramBot\Contracts\RequiresPermission;
 use Appto\TelegramBot\Routing\CommandRouter;
-use Illuminate\Console\Attributes\Description;
-use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('telegram:routes {bot?}
-    {--type= : Filter by router type (commands, callbacks, text)}')]
-#[Description('Shows the routes registered by bots (commands, callback patterns, text triggers).')]
 class RoutesListCommand extends Command
 {
+    protected $signature = 'telegram:routes {bot?}
+        {--type= : Filter by router type (commands, callbacks, text)}';
+
+    protected $description = 'Shows the routes registered by bots (commands, callback patterns, text triggers).';
+
     private const array ROUTER_LABELS = [
         'command' => 'Command',
         'callback' => 'Callback',

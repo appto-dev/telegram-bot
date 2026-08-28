@@ -9,14 +9,14 @@ use Appto\TelegramBot\Client\TelegramClient;
 use Appto\TelegramBot\Client\TelegramClientFactory;
 use Appto\TelegramBot\Console\Output\ChoiceBotPrompt;
 use Appto\TelegramBot\Console\Output\WebhookPrompts;
-use Illuminate\Console\Attributes\Description;
-use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('telegram:delete-webhook {bot?} {--drop : Drop all pending updates}')]
-#[Description('Deletes the bot\'s webhook, switching it back to long polling')]
 final class DeleteWebhookCommand extends Command
 {
+    protected $signature = 'telegram:delete-webhook {bot?} {--drop : Drop all pending updates}';
+
+    protected $description = 'Deletes the bot\'s webhook, switching it back to long polling';
+
     /**
      * Execute the console command.
      */

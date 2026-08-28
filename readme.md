@@ -3,6 +3,7 @@
 ![Cover](docs/cover.png)
 
 [![Tests](https://github.com/appto-dev/telegram-bot/actions/workflows/tests.yml/badge.svg)](https://github.com/appto-dev/telegram-bot/actions/workflows/tests.yml)
+[![Laravel 12+](https://img.shields.io/badge/Laravel-12%2B-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 🇷🇺 Русский · [🇬🇧 English](#english)
@@ -16,7 +17,7 @@ callback-паттерны, текстовые триггеры, произвол
 ## Требования
 
 - PHP 8.3+
-- Laravel 13+
+- Laravel 12+
 
 ## Установка
 
@@ -56,7 +57,7 @@ final class StartCommand implements CommandHandler
     'greet' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'webhook_secret' => env('TELEGRAM_BOT_WEBHOOK_SECRET'),
-        'bot' => \App\GreetBot\GreetBot::class,
+        'handler' => \App\GreetBot\GreetBot::class,
     ],
 ],
 ```
@@ -102,7 +103,7 @@ triggers, arbitrary update types), a step-by-step dialog engine, built-in author
 ### Requirements
 
 - PHP 8.3+
-- Laravel 13+
+- Laravel 12+
 
 ### Installation
 
@@ -142,7 +143,7 @@ final class StartCommand implements CommandHandler
     'greet' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'webhook_secret' => env('TELEGRAM_BOT_WEBHOOK_SECRET'),
-        'bot' => \App\GreetBot\GreetBot::class,
+        'handler' => \App\GreetBot\GreetBot::class,
     ],
 ],
 ```

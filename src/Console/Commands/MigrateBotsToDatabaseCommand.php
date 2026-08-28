@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Appto\TelegramBot\Console\Commands;
 
 use Appto\TelegramBot\Bot\TelegramBotModel;
-use Illuminate\Console\Attributes\Description;
-use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('telegram:migrate-bots-db
-    {--force : Overwrite bots that already exist in the database}
-    {--dry-run : Show what would happen without writing anything}')]
-#[Description('Copies bots from the config file ("telegram-bot.bots") into the telegram_bots table')]
 final class MigrateBotsToDatabaseCommand extends Command
 {
+    protected $signature = 'telegram:migrate-bots-db
+        {--force : Overwrite bots that already exist in the database}
+        {--dry-run : Show what would happen without writing anything}';
+
+    protected $description = 'Copies bots from the config file ("telegram-bot.bots") into the telegram_bots table';
+
     /**
      * Execute the console command.
      */
