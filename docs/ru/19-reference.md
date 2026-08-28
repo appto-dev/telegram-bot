@@ -15,7 +15,7 @@
 
 | Команда | Назначение |
 |---|---|
-| `telegram:poll {bot?}` | Long polling для разработки. Флаги: `--timeout`, `-o/--show-outgoing`, `--only=*`, `--user=*`, `--dry-run`, `-l/--log-traffic` |
+| `telegram:poll {bot?}` | Long polling для разработки. Флаги: `--timeout`, `-o/--show-outgoing`, `--only=*`, `--user=*`, `--dry-run`, `-l/--log-traffic`, `-v` — печатать полный JSON каждого апдейта (стандартная вербозность Console, см. [16.4](16-debugging.md#164-подробный-вывод-апдейтов--v)) |
 | `telegram:set-webhook {bot}` | Установить вебхук |
 | `telegram:delete-webhook {bot}` | Снять вебхук |
 | `telegram:routes {bot?} [--type=commands\|callbacks\|text]` | Список зарегистрированных маршрутов |

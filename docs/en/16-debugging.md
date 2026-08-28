@@ -34,7 +34,25 @@ Writes raw incoming and outgoing payloads to `storage/logs/telegram-traffic.log`
 bug doesn't reproduce clearly in the console and you need to attach a log to an issue, or review it
 later.
 
-## 16.4 "The bot isn't responding" checklist
+## 16.4 Verbose update output: `-v`
+
+```bash
+php artisan telegram:poll default -v
+```
+
+By default `telegram:poll` prints one line per update (timestamp, type, a short summary). `-v` is
+the standard Symfony/Laravel Console verbosity flag — it isn't declared in the command's
+`$signature`, it's inherited from the base `Illuminate\Console\Command` — but the command does act
+on it: with `-v`, the full update gets printed under each line too, as `Update::toArray()` rendered
+with `JSON_PRETTY_PRINT`, with `null` fields filtered out for brevity. Handy when the summary line
+isn't enough — e.g. inspecting every field of a nested object (`message.entities`, the whole
+`callback_query.message`, etc.) without adding a `dd()` to the code or turning on persistent
+logging via `-l`.
+
+It combines with the other flags as usual — `telegram:poll default -v --dry-run` shows the full
+JSON of incoming updates without dispatching them to the bot's handlers at all.
+
+## 16.5 "The bot isn't responding" checklist
 
 1. Are webhook and `telegram:poll` running for the same bot at the same time? Telegram only
    delivers updates one way at a time, so the other one goes silent (see

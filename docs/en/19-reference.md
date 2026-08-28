@@ -15,7 +15,7 @@
 
 | Command | Purpose |
 |---|---|
-| `telegram:poll {bot?}` | Long polling for development. Flags: `--timeout`, `-o/--show-outgoing`, `--only=*`, `--user=*`, `--dry-run`, `-l/--log-traffic` |
+| `telegram:poll {bot?}` | Long polling for development. Flags: `--timeout`, `-o/--show-outgoing`, `--only=*`, `--user=*`, `--dry-run`, `-l/--log-traffic`, `-v` — print the full JSON of every update (standard Console verbosity, see [16.4](16-debugging.md#164-verbose-update-output--v)) |
 | `telegram:set-webhook {bot}` | Set the webhook |
 | `telegram:delete-webhook {bot}` | Remove the webhook |
 | `telegram:routes {bot?} [--type=commands\|callbacks\|text]` | List registered routes |

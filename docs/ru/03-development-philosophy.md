@@ -95,7 +95,41 @@ app/ShopBot/
 …), без общих классов-хендлеров между ними: у разных ботов обычно разная бизнес-логика, даже если
 сценарий называется похоже.
 
-## 3.6 Философия ответов пользователю
+## 3.6 Хендлер: класс или `Closure`
+
+У всех четырёх способов регистрации — `onCommand()`, `onCallback()`, `onText()`, `onUpdate()` —
+второй аргумент имеет одну и ту же форму: `callable|string`. Это либо `Closure` (или любой
+callable), либо class-string класса, реализующего соответствующий контракт-интерфейс:
+
+| Регистрация | Контракт класса | Сигнатура `handle()` |
+|---|---|---|
+| `onCommand()` | `CommandHandler` (= `UpdateHandler`) | `handle(UpdateContext $context): void` |
+| `onText()` | `UpdateHandler` | `handle(UpdateContext $context): void` |
+| `onUpdate()` | `UpdateHandler` | `handle(UpdateContext $context): void` |
+| `onCallback()` | `CallbackHandler` | `handle(UpdateContext $context, array $params): void` |
+
+`onCallback()` — единственный случай с отдельным контрактом: паттерн может содержать именованные
+`{параметры}`, которые роутер выделяет из `callback_data` и передаёт вторым аргументом.
+
+```php
+// класс — предпочтительно для всего сложнее одной строки
+$this->onCommand('start', StartCommand::class);
+
+// Closure — ок для разовой мелочи
+$this->onText('ping', fn (UpdateContext $context) => $context->reply('pong'));
+```
+
+Оба варианта в итоге проходят через `HandlerInvoker`, который резолвит их через контейнер
+(`app()->call(...)`) — поэтому `Closure` может, как и метод класса, дополнительно
+type-hint’ить любые сервисы из контейнера помимо `UpdateContext $context` (и `array $params` для
+callback), и параметры можно перечислять в любом порядке — Laravel сопоставит их по типу/имени, а
+не по позиции.
+
+Класс, реализующий контракт, дополнительно может реализовать `RequiresPermission` (см.
+[11. Права доступа](11-permissions.md)) — фреймворк вызовет `authorize()` до `handle()`. Для
+`Closure` такой возможности нет: если нужна проверка прав, используйте класс.
+
+## 3.7 Философия ответов пользователю
 
 Внутри хендлера/шага у вас есть объект контекста апдейта, через который можно ответить без
 ручного указания `chat_id` — фреймворк сам знает, кому и в какой чат отвечать:

@@ -94,7 +94,40 @@ For several bots in one application — a separate folder per bot (`app/MyBot`, 
 …), without sharing handler classes between them: different bots usually have different business
 logic even when a scenario sounds similar.
 
-## 3.6 The philosophy behind replies
+## 3.6 Handler: a class or a `Closure`
+
+All four registration methods — `onCommand()`, `onCallback()`, `onText()`, `onUpdate()` — share the
+same shape for their second argument: `callable|string`. That's either a `Closure` (or any
+callable), or the class-string of a class implementing the matching contract interface:
+
+| Registration | Class contract | `handle()` signature |
+|---|---|---|
+| `onCommand()` | `CommandHandler` (= `UpdateHandler`) | `handle(UpdateContext $context): void` |
+| `onText()` | `UpdateHandler` | `handle(UpdateContext $context): void` |
+| `onUpdate()` | `UpdateHandler` | `handle(UpdateContext $context): void` |
+| `onCallback()` | `CallbackHandler` | `handle(UpdateContext $context, array $params): void` |
+
+`onCallback()` is the one exception with its own contract: a pattern can contain named
+`{parameters}`, which the router extracts from `callback_data` and passes as the second argument.
+
+```php
+// a class — preferred for anything more involved than one line
+$this->onCommand('start', StartCommand::class);
+
+// a Closure — fine for a one-off
+$this->onText('ping', fn (UpdateContext $context) => $context->reply('pong'));
+```
+
+Either way, the handler ends up going through `HandlerInvoker`, which resolves it via the
+container (`app()->call(...)`) — so a `Closure` can, just like a class method, type-hint any extra
+container-resolved service alongside `UpdateContext $context` (and `array $params` for a callback),
+and the parameters can be listed in any order — Laravel matches them by type/name, not by position.
+
+A class implementing the contract can additionally implement `RequiresPermission` (see
+[11. Permissions](11-permissions.md)) — the framework calls `authorize()` before `handle()`. A
+`Closure` has no equivalent hook: if you need a permission check, use a class.
+
+## 3.7 The philosophy behind replies
 
 Inside a handler/step you have an update context object that lets you reply without manually
 passing `chat_id` — the framework already knows who and where to reply to:
