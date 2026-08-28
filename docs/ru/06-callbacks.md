@@ -13,15 +13,15 @@ $this->onCallback('order:confirm {id}', OrderConfirmHandler::class);
 ```
 
 Фигурные скобки — именованные параметры, которые фреймворк выделит из `callback_data` по паттерну
-и передаст в хендлер. Например, кнопка с `callback_data = 'order:confirm 42'` вызовет
-`OrderConfirmHandler` с `id = '42'`.
+и передаст в хендлер массивом `$params`. Например, кнопка с `callback_data = 'order:confirm 42'`
+вызовет `OrderConfirmHandler` с `$params = ['id' => '42']`.
 
 ```php
 class OrderConfirmHandler implements CallbackHandler
 {
-    public function handle(UpdateContext $context, string $id): void
+    public function handle(UpdateContext $context, array $params): void
     {
-        // подтверждаем заказ №$id
+        // подтверждаем заказ №$params['id']
         $context->answerCallbackQuery();
     }
 }

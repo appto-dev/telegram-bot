@@ -14,15 +14,15 @@ $this->onCallback('order:confirm {id}', OrderConfirmHandler::class);
 ```
 
 Curly braces mark named parameters that the framework extracts from `callback_data` using the
-pattern and passes into the handler. For example, a button with
-`callback_data = 'order:confirm 42'` calls `OrderConfirmHandler` with `id = '42'`.
+pattern and passes into the handler as a `$params` array. For example, a button with
+`callback_data = 'order:confirm 42'` calls `OrderConfirmHandler` with `$params = ['id' => '42']`.
 
 ```php
 class OrderConfirmHandler implements CallbackHandler
 {
-    public function handle(UpdateContext $context, string $id): void
+    public function handle(UpdateContext $context, array $params): void
     {
-        // confirm order #$id
+        // confirm order #$params['id']
         $context->answerCallbackQuery();
     }
 }
