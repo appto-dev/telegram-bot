@@ -44,16 +44,16 @@ bot:
 
 ```php
 'bots' => [
-    'shop' => [
+    'default' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'webhook_secret' => env('TELEGRAM_BOT_WEBHOOK_SECRET'),
-        'bot' => \App\ShopBot\ShopBot::class,
+        'handler' => \App\MyBot\MyBot::class,
     ],
 ],
 ```
 
-The array key (`shop`) is an arbitrary bot alias — it's used in the webhook route and in every
-artisan command (`telegram:poll shop`, `telegram:routes shop`, …).
+The array key (`default`) is an arbitrary bot alias — it's used in the webhook route and in every
+artisan command (`telegram:poll default`, `telegram:routes default`, …).
 
 ## 2.4 First check
 
@@ -61,7 +61,7 @@ You still need a real bot token from [@BotFather](https://t.me/BotFather). Once 
 the fastest way to check everything is wired up correctly is:
 
 ```bash
-php artisan telegram:poll shop
+php artisan telegram:poll default
 ```
 
 This starts receiving updates via long polling — no public HTTPS domain needed for local

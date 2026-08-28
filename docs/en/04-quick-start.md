@@ -55,7 +55,7 @@ class StartCommand implements CommandHandler, HasDescription
     'greet' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'webhook_secret' => env('TELEGRAM_BOT_WEBHOOK_SECRET'),
-        'bot' => \App\GreetBot\GreetBot::class,
+        'handler' => \App\GreetBot\GreetBot::class,
     ],
 ],
 ```

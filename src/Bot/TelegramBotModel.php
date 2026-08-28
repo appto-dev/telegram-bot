@@ -17,7 +17,7 @@ final class TelegramBotModel extends Model
 {
     protected $table = 'telegram_bots';
 
-    protected $fillable = ['name', 'token', 'handler'];
+    protected $fillable = ['name', 'token', 'webhook_secret', 'handler', 'is_active'];
 
     protected $casts = [
         'token' => 'encrypted',

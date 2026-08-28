@@ -3,8 +3,8 @@
 ## 16.1 Listing every route a bot has
 
 ```bash
-php artisan telegram:routes shop
-php artisan telegram:routes shop --type=commands
+php artisan telegram:routes default
+php artisan telegram:routes default --type=commands
 ```
 
 Shows every registered command, callback pattern and text trigger for a given bot, and flags which
@@ -17,7 +17,7 @@ registered, without reading the whole bot class.
 ## 16.2 Inspecting traffic without running handlers
 
 ```bash
-php artisan telegram:poll shop --dry-run
+php artisan telegram:poll default --dry-run
 ```
 
 Shows every incoming update in real time but doesn't dispatch them to the bot's handlers — handy
@@ -27,7 +27,7 @@ when you need to see exactly what Telegram is sending (e.g. figuring out a third
 ## 16.3 Logging traffic to a file
 
 ```bash
-php artisan telegram:poll shop -l
+php artisan telegram:poll default -l
 ```
 
 Writes raw incoming and outgoing payloads to `storage/logs/telegram-traffic.log` — useful when a

@@ -15,7 +15,7 @@ Telegram поддерживает два способа доставки апд�
 ## 13.2 Long polling для разработки
 
 ```bash
-php artisan telegram:poll shop
+php artisan telegram:poll default
 ```
 
 Без аргумента команда предложит выбрать бота из списка интерактивно:
@@ -40,7 +40,7 @@ php artisan telegram:poll
 | `-l`, `--log-traffic` | Писать сырые входящие/исходящие данные в `storage/logs/telegram-traffic.log` |
 
 ```bash
-php artisan telegram:poll shop --only=callback_query --user=123456789 --dry-run
+php artisan telegram:poll default --only=callback_query --user=123456789 --dry-run
 ```
 
 Ошибки во время long polling не останавливают команду: сбой `getUpdates` уходит в экспоненциальный
@@ -52,8 +52,8 @@ Long polling держит процесс на переднем плане и н�
 ## 13.3 Webhook для продакшена
 
 ```bash
-php artisan telegram:set-webhook shop
-php artisan telegram:delete-webhook shop
+php artisan telegram:set-webhook default
+php artisan telegram:delete-webhook default
 ```
 
 Каждый бот получает свой маршрут вида `POST /telegram/webhook/{botName}`. Подлинность запроса

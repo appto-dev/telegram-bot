@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Bot\TestBot;
-use App\ShopBot\ShopBot;
+use App\MyBot\MyBot;
 use GuzzleHttp\RequestOptions;
 
 return [
@@ -20,16 +19,10 @@ return [
     |
     */
     'bots' => [
-        'test' => [
+        'default' => [
             'token' => env('TELEGRAM_BOT_TOKEN'),
             'webhook_secret' => env('TELEGRAM_BOT_WEBHOOK_SECRET'),
-            'bot' => TestBot::class,
-        ],
-
-        'shop' => [
-            'token' => env('TELEGRAM_BOT_TOKEN'),
-            'webhook_secret' => env('TELEGRAM_BOT_WEBHOOK_SECRET'),
-            'bot' => ShopBot::class,
+            'handler' => MyBot::class,
         ],
     ],
 

@@ -6,15 +6,15 @@ One project can serve any number of bots — just add another entry to the confi
 
 ```php
 'bots' => [
-    'shop' => [
-        'token' => env('SHOP_BOT_TOKEN'),
-        'webhook_secret' => env('SHOP_BOT_WEBHOOK_SECRET'),
-        'bot' => \App\ShopBot\ShopBot::class,
+    'default' => [
+        'token' => env('DEFAULT_BOT_TOKEN'),
+        'webhook_secret' => env('DEFAULT_BOT_WEBHOOK_SECRET'),
+        'handler' => \App\MyBot\MyBot::class,
     ],
     'support' => [
         'token' => env('SUPPORT_BOT_TOKEN'),
         'webhook_secret' => env('SUPPORT_BOT_WEBHOOK_SECRET'),
-        'bot' => \App\SupportBot\SupportBot::class,
+        'handler' => \App\SupportBot\SupportBot::class,
     ],
 ],
 ```
@@ -30,8 +30,8 @@ Bots are fully independent of each other:
   command names are identical;
 - dialog state is scoped to a specific (bot, chat, user) triple — the same person can be mid-dialog
   in one bot and not in a dialog at all in another, at the same time;
-- each bot has its own webhook route (`/telegram/webhook/shop`, `/telegram/webhook/support`), and
-  artisan commands take the bot's alias as their first argument (`telegram:poll shop`,
+- each bot has its own webhook route (`/telegram/webhook/default`, `/telegram/webhook/support`), and
+  artisan commands take the bot's alias as their first argument (`telegram:poll default`,
   `telegram:routes support`).
 
 ## Next

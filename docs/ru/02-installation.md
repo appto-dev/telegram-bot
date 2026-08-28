@@ -43,16 +43,16 @@ TELEGRAM_BOT_UNAUTHORIZED_MESSAGE=    # см. §11 «Права доступа»
 
 ```php
 'bots' => [
-    'shop' => [
+    'default' => [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'webhook_secret' => env('TELEGRAM_BOT_WEBHOOK_SECRET'),
-        'bot' => \App\ShopBot\ShopBot::class,
+        'handler' => \App\MyBot\MyBot::class,
     ],
 ],
 ```
 
-Ключ массива (`shop`) — произвольный алиас бота: он используется в маршруте вебхука и во всех
-artisan-командах (`telegram:poll shop`, `telegram:routes shop`, …).
+Ключ массива (`default`) — произвольный алиас бота: он используется в маршруте вебхука и во всех
+artisan-командах (`telegram:poll default`, `telegram:routes default`, …).
 
 ## 2.4 Первая проверка
 
@@ -60,7 +60,7 @@ artisan-командах (`telegram:poll shop`, `telegram:routes shop`, …).
 Как только он есть и прописан в `.env`, самый быстрый способ проверить, что всё подключилось:
 
 ```bash
-php artisan telegram:poll shop
+php artisan telegram:poll default
 ```
 
 Команда начнёт получать апдейты через long polling — этого достаточно для локальной разработки,

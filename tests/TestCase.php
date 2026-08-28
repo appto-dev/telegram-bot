@@ -8,6 +8,7 @@ use Appto\TelegramBot\TelegramBotServiceProvider;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Config\Repository as ConfigContract;
 use Illuminate\Database\DatabaseServiceProvider;
+use Illuminate\Encryption\EncryptionServiceProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Facade;
@@ -76,6 +77,7 @@ abstract class TestCase extends BaseTestCase
         $app->instance('config', new Repository([
             'app' => [
                 'key' => 'base64:'.base64_encode(random_bytes(32)),
+                'cipher' => 'AES-256-CBC',
                 'name' => 'Testing',
             ],
             'database' => [
@@ -93,6 +95,7 @@ abstract class TestCase extends BaseTestCase
         ]));
 
         $app->register(DatabaseServiceProvider::class);
+        $app->register(EncryptionServiceProvider::class);
         $app->register(LaravelDataServiceProvider::class);
         $app->register(TelegramBotServiceProvider::class);
 
@@ -108,6 +111,16 @@ abstract class TestCase extends BaseTestCase
     protected function migrateDialogStates(): void
     {
         $migration = require __DIR__.'/../database/migrations/2026_08_14_212213_create_telegram_dialog_states_table.php';
+        $migration->up();
+    }
+
+    /**
+     * Runs the package's telegram_bots migration against the booted in-memory connection.
+     * Only the tests that actually touch the bots table need to call this.
+     */
+    protected function migrateBots(): void
+    {
+        $migration = require __DIR__.'/../database/migrations/2026_08_14_212212_create_telegram_bots_table.php';
         $migration->up();
     }
 

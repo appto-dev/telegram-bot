@@ -9,7 +9,7 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('telegram:migrate-bots-to-database
+#[Signature('telegram:migrate-bots-db
     {--force : Overwrite bots that already exist in the database}
     {--dry-run : Show what would happen without writing anything}')]
 #[Description('Copies bots from the config file ("telegram-bot.bots") into the telegram_bots table')]
@@ -37,7 +37,7 @@ final class MigrateBotsToDatabaseCommand extends Command
             $existing = TelegramBotModel::query()->where('name', $name)->first();
 
             if ($existing && ! $force) {
-                $rows[] = [$name, $bot['bot'], 'skipped (already exists, use --force to overwrite)'];
+                $rows[] = [$name, $bot['handler'], 'skipped (already exists, use --force to overwrite)'];
 
                 continue;
             }
@@ -45,24 +45,22 @@ final class MigrateBotsToDatabaseCommand extends Command
             $action = $existing ? 'updated' : 'created';
 
             if ($dryRun) {
-                $rows[] = [$name, $bot['bot'], "would be {$action} (dry run)"];
+                $rows[] = [$name, $bot['handler'], "would be {$action} (dry run)"];
 
                 continue;
             }
 
             $model = $existing ?? new TelegramBotModel;
-            $model->name = $name;
-            $model->token = $bot['token'];
-            $model->handler = $bot['bot'];
-            $model->is_active = true;
 
-            if (! empty($bot['webhook_secret'])) {
-                $model->webhook_secret = $bot['webhook_secret'];
-            }
+            $model->fill([
+                'name' => $name,
+                'token' => $bot['token'],
+                'webhook_secret' => $bot['webhook_secret'] ?? null,
+                'handler' => $bot['handler'],
+                'is_active' => true,
+            ])->save();
 
-            $model->save();
-
-            $rows[] = [$name, $bot['bot'], $action];
+            $rows[] = [$name, $bot['handler'], $action];
         }
 
         $this->table(['Name', 'Handler', 'Result'], $rows);

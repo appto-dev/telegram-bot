@@ -11,7 +11,7 @@
 ## 12.2 Как написать свой
 
 ```php
-namespace App\ShopBot\Middleware;
+namespace App\MyBot\Middleware;
 
 use Appto\TelegramBot\Update\UpdateContext;
 use Appto\TelegramBot\Update\UpdateMiddleware;

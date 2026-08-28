@@ -15,7 +15,7 @@ framework — you don't need to switch code between them, they share the same pr
 ## 13.2 Long polling for development
 
 ```bash
-php artisan telegram:poll shop
+php artisan telegram:poll default
 ```
 
 Without an argument, the command lets you pick a bot interactively:
@@ -40,7 +40,7 @@ Useful flags:
 | `-l`, `--log-traffic` | Log raw incoming/outgoing payloads to `storage/logs/telegram-traffic.log` |
 
 ```bash
-php artisan telegram:poll shop --only=callback_query --user=123456789 --dry-run
+php artisan telegram:poll default --only=callback_query --user=123456789 --dry-run
 ```
 
 Errors during polling don't stop the command: a failed `getUpdates` call backs off exponentially
@@ -53,8 +53,8 @@ production.
 ## 13.3 Webhook for production
 
 ```bash
-php artisan telegram:set-webhook shop
-php artisan telegram:delete-webhook shop
+php artisan telegram:set-webhook default
+php artisan telegram:delete-webhook default
 ```
 
 Every bot gets its own route: `POST /telegram/webhook/{botName}`. Requests are authenticated with a

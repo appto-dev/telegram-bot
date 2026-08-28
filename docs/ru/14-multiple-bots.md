@@ -6,15 +6,15 @@
 
 ```php
 'bots' => [
-    'shop' => [
+    'default' => [
         'token' => env('SHOP_BOT_TOKEN'),
         'webhook_secret' => env('SHOP_BOT_WEBHOOK_SECRET'),
-        'bot' => \App\ShopBot\ShopBot::class,
+        'handler' => \App\MyBot\MyBot::class,
     ],
     'support' => [
         'token' => env('SUPPORT_BOT_TOKEN'),
         'webhook_secret' => env('SUPPORT_BOT_WEBHOOK_SECRET'),
-        'bot' => \App\SupportBot\SupportBot::class,
+        'handler' => \App\SupportBot\SupportBot::class,
     ],
 ],
 ```
@@ -30,8 +30,8 @@
   названия команд совпадают;
 - состояние диалога привязано к конкретному боту, чату и пользователю одновременно — один и тот же
   человек может одновременно быть на середине диалога в одном боте и не в диалоге в другом;
-- маршрут вебхука у каждого свой (`/telegram/webhook/shop`, `/telegram/webhook/support`), артisan-команды
-  принимают алиас бота первым аргументом (`telegram:poll shop`, `telegram:routes support`).
+- маршрут вебхука у каждого свой (`/telegram/webhook/default`, `/telegram/webhook/support`), artisan-команды
+  принимают алиас бота первым аргументом (`telegram:poll default`, `telegram:routes support`).
 
 ## Дальше
 

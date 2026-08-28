@@ -3,8 +3,8 @@
 ## 16.1 Список всех маршрутов бота
 
 ```bash
-php artisan telegram:routes shop
-php artisan telegram:routes shop --type=commands
+php artisan telegram:routes default
+php artisan telegram:routes default --type=commands
 ```
 
 Показывает все зарегистрированные команды, callback-паттерны и текстовые триггеры конкретного
@@ -17,7 +17,7 @@ php artisan telegram:routes shop --type=commands
 ## 16.2 Просмотр трафика без выполнения хендлеров
 
 ```bash
-php artisan telegram:poll shop --dry-run
+php artisan telegram:poll default --dry-run
 ```
 
 Показывает все входящие апдейты в реальном времени, но не передаёт их в хендлеры бота — удобно,
@@ -27,7 +27,7 @@ php artisan telegram:poll shop --dry-run
 ## 16.3 Логирование трафика в файл
 
 ```bash
-php artisan telegram:poll shop -l
+php artisan telegram:poll default -l
 ```
 
 Пишет сырые входящие и исходящие данные в `storage/logs/telegram-traffic.log` — полезно, когда

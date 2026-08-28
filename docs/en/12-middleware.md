@@ -10,7 +10,7 @@ rate-limiting, logging, blocking banned users, detecting the user's language, an
 ## 12.2 Writing your own
 
 ```php
-namespace App\ShopBot\Middleware;
+namespace App\MyBot\Middleware;
 
 use Appto\TelegramBot\Update\UpdateContext;
 use Appto\TelegramBot\Update\UpdateMiddleware;

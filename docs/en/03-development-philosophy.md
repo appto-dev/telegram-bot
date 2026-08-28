@@ -36,7 +36,7 @@ Every unit of behavior is a small, dedicated class:
 | Cross-cutting check | `UpdateMiddleware` | `Middleware/` |
 
 This layout isn't enforced by the framework (it doesn't care where your files live) — it's the
-convention followed by the example package (`app/ShopBot`). It pays off by keeping a bot's
+convention followed by the example package (`app/MyBot`). It pays off by keeping a bot's
 `boot()` short and readable, and every class independently testable.
 
 ## 3.3 One update's journey, in plain terms
@@ -69,7 +69,7 @@ need a dialog.
 
 ## 3.5 Recommended folder structure
 
-Based on `app/ShopBot`:
+Based on `app/MyBot`:
 
 ```
 app/ShopBot/
@@ -90,7 +90,7 @@ app/ShopBot/
             └── AskGender.php
 ```
 
-For several bots in one application — a separate folder per bot (`app/ShopBot`, `app/SupportBot`,
+For several bots in one application — a separate folder per bot (`app/MyBot`, `app/SupportBot`,
 …), without sharing handler classes between them: different bots usually have different business
 logic even when a scenario sounds similar.
 
