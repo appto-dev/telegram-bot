@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('telegram_bots', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->text('token');
             $table->string('handler');
             $table->text('webhook_secret')->nullable();

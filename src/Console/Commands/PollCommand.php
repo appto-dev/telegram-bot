@@ -106,7 +106,7 @@ final class PollCommand extends Command
                 ])->getUpdates(offset: $offset, timeout: $timeout, allowed_updates: $only);
 
                 $failures = 0;
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $errorDisplay->handleFatal($e);
                 report($e);
 
@@ -130,7 +130,7 @@ final class PollCommand extends Command
 
                 try {
                     $updateDisplay->handle($update);
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     $errorDisplay->handleFatal($e);
                     report($e);
                 }
@@ -142,7 +142,7 @@ final class PollCommand extends Command
                 try {
                     $context = new UpdateContext($identity, $update);
                     $bot->dispatch($context);
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     $errorDisplay->handleUpdateError($e, $update);
                 }
             }
@@ -171,7 +171,7 @@ final class PollCommand extends Command
         $type = UpdateType::detect($update);
 
         return match (true) {
-            $type->payloadClass() instanceof Message => $update->{$type->value}->from->id,
+            $type->payloadClass() === Message::class => $update->{$type->value}->from->id,
             isset($update->{$type->value}->from) && $update->{$type->value}->from => $update->{$type->value}->from->id,
             default => null,
         };

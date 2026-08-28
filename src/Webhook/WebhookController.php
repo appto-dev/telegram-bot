@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Appto\TelegramBot\Webhook;
 
+use Appto\TelegramBot\Bot\BotIdentity;
 use Appto\TelegramBot\Bot\BotManager;
 use Appto\TelegramBot\Type\Update;
 use Appto\TelegramBot\Update\Deduplicator;
@@ -20,7 +21,8 @@ final readonly class WebhookController
 
     public function __invoke(Request $request, string $botId): Response
     {
-        $identity = $this->manager->findByName($botId);
+        /** @var BotIdentity $identity */
+        $identity = $request->attributes->get('telegramBotIdentity');
 
         $update = Update::from($request);
         $context = new UpdateContext($identity, $update);

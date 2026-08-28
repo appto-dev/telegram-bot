@@ -18,7 +18,7 @@ final class UpdateContext implements CanReply
 
     public function __construct(
         public BotIdentity $bot,
-        private readonly ?Update $update = null,
+        private readonly Update $update,
     ) {}
 
     public function client(): TelegramClient
@@ -100,6 +100,6 @@ final class UpdateContext implements CanReply
         $type = UpdateType::detect($this->update);
         $update = $this->update()->{$type->value};
 
-        return $update->chat?->type === 'private';
+        return ($update->chat?->type ?? $update->message?->chat?->type) === 'private';
     }
 }

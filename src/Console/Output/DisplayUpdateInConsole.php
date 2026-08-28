@@ -118,7 +118,9 @@ final readonly class DisplayUpdateInConsole
                 sprintf(
                     'callback from <fg=green>%s</> %s data=<fg=yellow>%s</>',
                     $this->userLabel($update->callback_query->from),
-                    $this->dialogLabel($update->callback_query->message->chat->id, $update->callback_query->from->id),
+                    $update->callback_query->message?->chat->id !== null
+                        ? $this->dialogLabel($update->callback_query->message->chat->id, $update->callback_query->from->id)
+                        : '',
                     $update->callback_query->data ?? '—',
                 ),
             ],

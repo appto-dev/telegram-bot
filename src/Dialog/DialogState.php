@@ -25,16 +25,18 @@ final class DialogState extends Dto
 
     public function withStep(string $step): self
     {
-        $this->step = $step;
+        $clone = clone $this;
+        $clone->step = $step;
 
-        return $this;
+        return $clone;
     }
 
     /** @param  array<string, mixed>  $data */
     public function withMergedAnswers(string $stepName, string|int|array|null $data = null): self
     {
-        $this->answers[$stepName] = $data;
+        $clone = clone $this;
+        $clone->answers[$stepName] = $data;
 
-        return $this;
+        return $clone;
     }
 }

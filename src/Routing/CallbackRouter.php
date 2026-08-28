@@ -48,12 +48,11 @@ final class CallbackRouter implements RouterContract
     }
 
     /**
-     * payment:{amount:string}:{currency:string:3}:{type?}
-     *  - payment:100:usd:card => ['amount' => '100', 'currency' => 'usd', 'type' => 'card']
-     *  - payment:100:usd => ['type' => null, 'amount' => '100', 'currency' => 'usd']
-     *  - payment::100:usd => null.
-     *
      * order:confirm {id} => ['id' => '1']
+     * order:confirm {id?} => ['id' => '1'] or ['id' => null] if omitted
+     *
+     * Named groups are plain {name}/{name?} placeholders — no type/length
+     * annotations are supported (e.g. {amount:string} is treated as a literal).
      */
     private function match(string $pattern, string $data): ?array
     {

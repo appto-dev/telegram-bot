@@ -55,10 +55,15 @@ final class MigrateBotsToDatabaseCommand extends Command
             $model->fill([
                 'name' => $name,
                 'token' => $bot['token'],
-                'webhook_secret' => $bot['webhook_secret'] ?? null,
                 'handler' => $bot['handler'],
                 'is_active' => true,
-            ])->save();
+            ]);
+
+            if (! empty($bot['webhook_secret'])) {
+                $model->fill(['webhook_secret' => $bot['webhook_secret']]);
+            }
+
+            $model->save();
 
             $rows[] = [$name, $bot['handler'], $action];
         }

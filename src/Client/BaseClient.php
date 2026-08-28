@@ -10,6 +10,7 @@ use Appto\TelegramBot\Exceptions\TelegramApiException;
 use Appto\TelegramBot\Type\InputFile;
 use Appto\TelegramBot\Type\ResponseParameters;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
@@ -25,7 +26,9 @@ class BaseClient
         array $httpConfig = [],
     ) {
         $baseUrl = rtrim(config('telegram-bot.base_uri'), '/').'/bot'.$this->identity->token;
-        $this->http = Http::baseUrl($baseUrl)->retry(3)->withOptions($httpConfig);
+        $this->http = Http::baseUrl($baseUrl)
+            ->retry(times: 3, when: fn ($exception) => $exception instanceof ConnectionException)
+            ->withOptions($httpConfig);
     }
 
     public function call(string $method, array $parameters = []): bool|int|string|array
