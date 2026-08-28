@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $token
  * @property string $webhook_secret
- * @property string $handler_class
+ * @property string $handler
  * @property bool $is_active
  */
 final class TelegramBotModel extends Model

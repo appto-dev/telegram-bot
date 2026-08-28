@@ -10,6 +10,7 @@ use Appto\TelegramBot\Bot\ConfigBotRepository;
 use Appto\TelegramBot\Bot\DatabaseBotRepository;
 use Appto\TelegramBot\Client\TelegramClientFactory;
 use Appto\TelegramBot\Console\Commands\DeleteWebhookCommand;
+use Appto\TelegramBot\Console\Commands\MigrateBotsToDatabaseCommand;
 use Appto\TelegramBot\Console\Commands\PollCommand;
 use Appto\TelegramBot\Console\Commands\RoutesListCommand;
 use Appto\TelegramBot\Console\Commands\SetWebhookCommand;
@@ -62,7 +63,7 @@ final class TelegramBotServiceProvider extends ServiceProvider
                 SetWebhookCommand::class,
                 DeleteWebhookCommand::class,
                 RoutesListCommand::class,
-
+                MigrateBotsToDatabaseCommand::class,
             ]);
 
             $this->publishes([

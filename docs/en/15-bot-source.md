@@ -32,6 +32,22 @@ The change is limited to a single environment variable, `TELEGRAM_BOT_REPOSITORY
 (the `Bot` subclasses, handlers, dialogs) doesn't depend on the bot list's source at all and needs
 no changes.
 
+## 15.4 Moving bots from config into the database
+
+If bots are already described in `config/telegram-bot.php` (`bots`) and you're switching to
+`database`, you don't need to re-enter them by hand — there's a command for that:
+
+```bash
+php artisan telegram:migrate-bots-to-database [--force] [--dry-run]
+```
+
+It reads `config('telegram-bot.bots')` and creates/updates the matching rows in `telegram_bots`
+(keyed by `name` = the bot's alias in the config). Without flags it leaves bots that already exist
+in the database alone and marks them `skipped`; `--force` overwrites them with the config's data;
+`--dry-run` shows what would happen without writing anything. After migrating, switch
+`TELEGRAM_BOT_REPOSITORY=database` (see 15.3) — you can leave the old `bots` entry in the config,
+it's simply no longer read as the source.
+
 ## Next
 
 → [16. Debugging](16-debugging.md)
