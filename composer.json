@@ -1,0 +1,65 @@
+{
+  "name": "appto-team/telegram-bot",
+  "description": "Multi-bot Telegram framework for Laravel — dialogs, command/callback routing, webhook & long-polling delivery",
+  "type": "library",
+  "license": "MIT",
+  "keywords": ["laravel", "telegram", "telegram-bot", "bot-framework", "bot-api", "webhook", "long-polling", "dialogs", "chatbot", "laravel-package"],
+  "homepage": "https://github.com/appto-dev/telegram-bot",
+  "authors": [
+    {
+      "name": "Makhlenko Sergey",
+      "email": "sergey@appto.team",
+      "homepage": "https://appto.team"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/appto-dev/telegram-bot/issues",
+    "source": "https://github.com/appto-dev/telegram-bot"
+  },
+  "funding": [
+    {
+      "type": "custom",
+      "url": "https://github.com/appto-dev/telegram-bot#поддержать-проект"
+    }
+  ],
+  "require": {
+    "php": "^8.3",
+    "illuminate/support": "^13.0",
+    "illuminate/console": "^13.0",
+    "illuminate/database": "^13.0",
+    "illuminate/http": "^13.0",
+    "illuminate/queue": "^13.0",
+    "illuminate/cache": "^13.0",
+    "spatie/laravel-data": "^4.23",
+    "appto-team/telegram-bot-cast-laravel": "^3.0",
+    "laravel/prompts": "^0.3.23"
+  },
+  "require-dev": {
+    "laravel/framework": "^13.0",
+    "phpunit/phpunit": "^11.0",
+    "laravel/pint": "^1.17"
+  },
+  "autoload": {
+    "psr-4": {
+      "Appto\\TelegramBot\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Appto\\TelegramBot\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Appto\\TelegramBot\\TelegramBotServiceProvider"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+    "format": "pint"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
