@@ -18,6 +18,7 @@
 | `telegram:poll {bot?}` | Long polling for development. Flags: `--timeout`, `-o/--show-outgoing`, `--only=*`, `--user=*`, `--dry-run`, `-l/--log-traffic`, `-v` — print the full JSON of every update (standard Console verbosity, see [16.4](16-debugging.md#164-verbose-update-output--v)) |
 | `telegram:set-webhook {bot}` | Set the webhook |
 | `telegram:delete-webhook {bot}` | Remove the webhook |
+| `telegram:webhook-secret` | Generate a random string for `TELEGRAM_BOT_WEBHOOK_SECRET` (see [2.2](02-installation.md#22-environment-variables)). Same as calling `Appto\TelegramBot\Support\SecretGenerator::generate()` from code |
 | `telegram:routes {bot?} [--type=commands\|callbacks\|text]` | List registered routes |
 
 ## 19.3 Glossary

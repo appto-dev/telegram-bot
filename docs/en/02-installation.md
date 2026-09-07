@@ -48,12 +48,33 @@ You don't have to make up a random string for `TELEGRAM_BOT_WEBHOOK_SECRET` by h
 can generate one for you:
 
 ```bash
-php artisan telegram:webhook-secret            # 40 characters by default
-php artisan telegram:webhook-secret --length=64
+php artisan telegram:webhook-secret
 ```
 
-The command prints the generated string to the terminal — copy it into `.env`. It doesn't send
-anything or touch the file, it only generates the value.
+The command prints the generated string to the terminal (48 hex characters,
+`bin2hex(random_bytes(24))`) — copy it into `.env`. It doesn't send anything or touch the file, it
+only generates the value.
+
+The same algorithm is available from code too —
+`Appto\TelegramBot\Support\SecretGenerator::generate()`. The package no longer auto-generates a
+`webhook_secret` when a `telegram_bots` row is created (`repository = database`) — if you need one
+right away when creating a bot programmatically (e.g. in your own SaaS bot-onboarding flow), call
+the generator yourself:
+
+```php
+use Appto\TelegramBot\Bot\TelegramBotModel;
+use Appto\TelegramBot\Support\SecretGenerator;
+
+TelegramBotModel::create([
+    'name' => 'shop',
+    'token' => $token,
+    'handler' => \App\MyBot\MyBot::class,
+    'webhook_secret' => SecretGenerator::generate(),
+]);
+```
+
+`generate(int $bytes = 24)` takes an optional argument for the secret's length in bytes (the
+resulting hex string is twice that length).
 
 ## 2.3 Minimal config
 

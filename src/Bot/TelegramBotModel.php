@@ -24,26 +24,4 @@ final class TelegramBotModel extends Model
         'webhook_secret' => 'encrypted',
         'is_active' => 'boolean',
     ];
-
-    public function resetWebhookSecret(): void
-    {
-        $this->webhook_secret = $this->generateSecretString();
-        $this->save();
-    }
-
-    public function generateSecretString(): string
-    {
-        return bin2hex(random_bytes(32));
-    }
-
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        parent::creating(function (self $model) {
-            if (empty($model->webhook_secret)) {
-                $model->webhook_secret = $model->generateSecretString();
-            }
-        });
-    }
 }

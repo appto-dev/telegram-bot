@@ -19,6 +19,10 @@ The bot list is stored in a database table (the token is encrypted at rest). Thi
 bots are created dynamically — for example, if your application is itself a SaaS platform and each
 customer connects their own bot through a UI, without a developer or a deploy involved.
 
+The package doesn't auto-generate `webhook_secret` when you create a `telegram_bots` row — if your
+onboarding flow needs one, generate it yourself with
+`Appto\TelegramBot\Support\SecretGenerator::generate()` (see [2.2](02-installation.md#22-environment-variables)).
+
 Publish and run the migration before switching:
 
 ```bash

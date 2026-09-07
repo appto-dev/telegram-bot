@@ -48,12 +48,32 @@ TELEGRAM_BOT_UNAUTHORIZED_MESSAGE=    # см. §11 «Права доступа»
 умеет генерировать её сам:
 
 ```bash
-php artisan telegram:webhook-secret            # 40 символов по умолчанию
-php artisan telegram:webhook-secret --length=64
+php artisan telegram:webhook-secret
 ```
 
-Команда выводит готовую строку в терминал — её нужно скопировать в `.env`. Сама команда апдейты
-не отправляет и файл не правит, только генерирует значение.
+Команда выводит готовую строку в терминал (48 hex-символов, `bin2hex(random_bytes(24))`) — её
+нужно скопировать в `.env`. Сама команда апдейты не отправляет и файл не правит, только генерирует
+значение.
+
+Тот же алгоритм доступен и из кода — `Appto\TelegramBot\Support\SecretGenerator::generate()`.
+Пакет больше не генерирует `webhook_secret` автоматически при создании записи в `telegram_bots`
+(при `repository = database`) — если он нужен сразу при программном создании бота (например, в
+своём SaaS-флоу подключения ботов), вызовите генератор сами:
+
+```php
+use Appto\TelegramBot\Bot\TelegramBotModel;
+use Appto\TelegramBot\Support\SecretGenerator;
+
+TelegramBotModel::create([
+    'name' => 'shop',
+    'token' => $token,
+    'handler' => \App\MyBot\MyBot::class,
+    'webhook_secret' => SecretGenerator::generate(),
+]);
+```
+
+`generate(int $bytes = 24)` принимает необязательный аргумент — длину секрета в байтах (итоговая
+строка в hex вдвое длиннее).
 
 ## 2.3 Минимальный конфиг
 
