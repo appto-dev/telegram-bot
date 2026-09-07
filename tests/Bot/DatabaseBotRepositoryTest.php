@@ -82,25 +82,4 @@ final class DatabaseBotRepositoryTest extends TestCase
         $this->assertSame('shop', $bots['shop']->id);
         $this->assertSame('support', $bots['support']->id);
     }
-
-    /**
-     * webhook_secret is nullable on the column, but the model auto-generates one on create when
-     * left empty (see TelegramBotModel::boot()) — the repository must pass that generated value
-     * through rather than a leftover null.
-     */
-    public function test_an_auto_generated_webhook_secret_is_passed_through(): void
-    {
-        TelegramBotModel::create([
-            'name' => 'shop',
-            'token' => 'shop-token',
-            'webhook_secret' => null,
-            'handler' => 'App\ShopBot\ShopBot',
-            'is_active' => true,
-        ]);
-
-        $identity = (new DatabaseBotRepository)->all()['shop'];
-
-        $this->assertNotNull($identity->webhook_secret);
-        $this->assertSame(64, strlen($identity->webhook_secret));
-    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Appto\TelegramBot\Console\Commands;
 
 use Appto\TelegramBot\Support\SecretGenerator;
