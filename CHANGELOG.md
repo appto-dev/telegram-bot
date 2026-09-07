@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.3.1] - 2026-09-07
+## [0.3.0] - 2026-09-07
 
 ### Added
 
@@ -21,10 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `Support\SecretGenerator::generate()` explicitly when creating a bot programmatically (e.g. a
   SaaS onboarding flow). `telegram:webhook-secret` uses the same generator and drops the
   now-unused `--length` option.
-
-### Fixed
-
-- Missing `declare(strict_types=1)` in `GenerateWebhookSecret`.
 
 ## [0.2.0] - 2026-09-07
 
@@ -68,8 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   routing, stateful dialogs, built-in authorization and `/help`, webhook and long-polling
   delivery, config- and database-backed bot repositories.
 
-[Unreleased]: https://github.com/appto-dev/telegram-bot/compare/v0.3.1...HEAD
-[0.3.1]: https://github.com/appto-dev/telegram-bot/compare/v0.2.0...v0.3.1
+[Unreleased]: https://github.com/appto-dev/telegram-bot/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/appto-dev/telegram-bot/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/appto-dev/telegram-bot/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/appto-dev/telegram-bot/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/appto-dev/telegram-bot/releases/tag/v0.1.0
