@@ -29,6 +29,13 @@ TELEGRAM_BOT_TOKEN=123456:AA...
 TELEGRAM_BOT_WEBHOOK_SECRET=any-random-string
 ```
 
+> ⚠️ **`TELEGRAM_BOT_TOKEN` and `TELEGRAM_BOT_WEBHOOK_SECRET` are confidential.** Never commit
+> them to git, paste them into issues/chats/screenshots, or hand them to third parties. The token
+> grants full control of the bot (sending messages as it, reading updates, changing the webhook),
+> and the webhook secret is what protects the endpoint from forged requests — if either leaks,
+> rotate it immediately (the token via @BotFather, the secret with the command from §2.2 above)
+> and update it everywhere it's deployed.
+
 Useful but optional:
 
 ```env
@@ -36,6 +43,17 @@ TELEGRAM_BOT_REPOSITORY=config        # or database, see §15
 TELEGRAM_API_BASE_URI=https://api.telegram.org   # only change for a local Bot API Server
 TELEGRAM_BOT_UNAUTHORIZED_MESSAGE=    # see §11 "Permissions"
 ```
+
+You don't have to make up a random string for `TELEGRAM_BOT_WEBHOOK_SECRET` by hand — the package
+can generate one for you:
+
+```bash
+php artisan telegram:webhook-secret            # 40 characters by default
+php artisan telegram:webhook-secret --length=64
+```
+
+The command prints the generated string to the terminal — copy it into `.env`. It doesn't send
+anything or touch the file, it only generates the value.
 
 ## 2.3 Minimal config
 
