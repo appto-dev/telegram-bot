@@ -38,6 +38,7 @@ Useful flags:
 | `--user=123456789` | Only updates from the given Telegram user id |
 | `--dry-run` | Show incoming updates but **don't** dispatch them to the bot's handlers — inspect traffic without side effects |
 | `-l`, `--log-traffic` | Log raw incoming/outgoing payloads to `storage/logs/telegram-traffic.log` |
+| `-v`, `--verbose` | Standard Artisan/Symfony verbosity flag (not declared in `$signature`): prints the full update JSON (nulls stripped) below each update line |
 
 ```bash
 php artisan telegram:poll default --only=callback_query --user=123456789 --dry-run

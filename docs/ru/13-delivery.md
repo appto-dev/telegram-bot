@@ -38,6 +38,7 @@ php artisan telegram:poll
 | `--user=123456789` | Только апдейты от указанных Telegram user id |
 | `--dry-run` | Показывать апдейты, но **не** передавать их в хендлеры бота — удобно для инспекции трафика без побочных эффектов |
 | `-l`, `--log-traffic` | Писать сырые входящие/исходящие данные в `storage/logs/telegram-traffic.log` |
+| `-v`, `--verbose` | Штатный флаг verbosity Artisan/Symfony (не объявлен в `$signature`): под каждой строкой апдейта печатает его полный JSON (без `null`-полей) |
 
 ```bash
 php artisan telegram:poll default --only=callback_query --user=123456789 --dry-run
