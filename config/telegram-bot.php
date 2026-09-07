@@ -43,6 +43,33 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Database Repository Settings
+    |--------------------------------------------------------------------------
+    |
+    | Only used when repository = "database".
+    |
+    */
+    'database' => [
+        /*
+        | Which telegram_bots column is used as the public webhook route
+        | segment (/telegram/webhook/{key}) instead of "name".
+        |
+        | Point this at a column you added yourself (e.g. "uuid") via your
+        | own migration extending telegram_bots, if you don't want webhook
+        | URLs to reveal/leak the bot's human-readable name. The package
+        | does not create or manage this column — it's your migration and
+        | your uniqueness constraint.
+        |
+        | CLI commands (telegram:poll, telegram:set-webhook, ...) are
+        | unaffected — they always take the bot's "name".
+        |
+        | Default: "name" — identical behavior to previous versions.
+        */
+        'webhook_key_column' => 'name',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Base URI
     |--------------------------------------------------------------------------
     |

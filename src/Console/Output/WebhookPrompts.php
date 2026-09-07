@@ -43,7 +43,7 @@ final readonly class WebhookPrompts
     public function set(BotIdentity $identity): void
     {
         $existing = spin(fn () => $this->client->getWebhookInfo(), 'Checking webhook status...');
-        $url = route('telegram.webhook', $identity->id);
+        $url = route('telegram.webhook', $identity->webhookKey());
 
         if (! empty($existing->url) && $existing->url !== $url) {
             $confirmed = confirm(

@@ -46,7 +46,41 @@ It reads `config('telegram-bot.bots')` and creates/updates the matching rows in 
 in the database alone and marks them `skipped`; `--force` overwrites them with the config's data;
 `--dry-run` shows what would happen without writing anything. After migrating, switch
 `TELEGRAM_BOT_REPOSITORY=database` (see 15.3) — you can leave the old `bots` entry in the config,
-it's simply no longer read as the source.
+it's simply no longer read as the source. Note that the command doesn't fill in any custom webhook
+key column (see 15.5) — backfill it yourself after migrating.
+
+## 15.5 A custom webhook route key (database only)
+
+By default the webhook route is `/telegram/webhook/{name}` — the same human-readable name you use
+with `telegram:poll`, `telegram:set-webhook`, etc. That's predictable/guessable, which may not be
+acceptable for a public production URL.
+
+When `repository = database`, you can point the webhook route at a different column instead:
+
+```php
+// config/telegram-bot.php
+'database' => [
+    'webhook_key_column' => 'uuid',
+],
+```
+
+The package doesn't create or manage that column — add it yourself, in your own migration
+extending `telegram_bots`, and make sure it's unique and backfilled for every active bot:
+
+```php
+Schema::table('telegram_bots', function (Blueprint $table) {
+    $table->uuid('uuid')->nullable()->unique()->after('name');
+});
+```
+
+Once `webhook_key_column` points at it, `telegram:set-webhook` builds the URL from that column's
+value instead of `name`, and incoming webhook requests are matched against it. CLI commands are
+unaffected — `telegram:poll`, `telegram:set-webhook`, `telegram:delete-webhook` and
+`telegram:routes` still take the bot's `name`, only the webhook route/URL changes.
+
+If an active bot's row has an empty value in the configured column, the framework throws instead of
+silently falling back to `name` — fix the missing value rather than relying on a fallback that
+could route a webhook to the wrong bot.
 
 ## Next
 

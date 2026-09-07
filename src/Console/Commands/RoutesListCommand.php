@@ -77,6 +77,10 @@ class RoutesListCommand extends Command
         $this->newLine();
         $this->line("<fg=cyan;options=bold>Handler: {$identity->handler}</>");
 
+        if ($identity->webhookKey() !== $identity->id) {
+            $this->line("<fg=cyan>Webhook key: {$identity->webhookKey()}</>");
+        }
+
         if ($rows === []) {
             $this->line('  <fg=gray>no routes</>');
 

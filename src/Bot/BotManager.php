@@ -25,6 +25,17 @@ final readonly class BotManager
             ?? throw new \InvalidArgumentException("Bot [{$name}] is not registered.");
     }
 
+    public function findByWebhookKey(string $key): BotIdentity
+    {
+        foreach ($this->repository->all() as $identity) {
+            if ($identity->webhookKey() === $key) {
+                return $identity;
+            }
+        }
+
+        throw new \InvalidArgumentException("Bot with webhook key [{$key}] is not registered.");
+    }
+
     /**
      * @throws BindingResolutionException
      */

@@ -16,5 +16,11 @@ final class BotIdentity extends Dto
         public ?string $webhook_secret,
         /** @var class-string<Bot> */
         public string $handler,
+        public ?string $webhook_key = null,
     ) {}
+
+    public function webhookKey(): string
+    {
+        return $this->webhook_key ?? $this->id;
+    }
 }

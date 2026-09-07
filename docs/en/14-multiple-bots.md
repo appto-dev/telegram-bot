@@ -32,7 +32,9 @@ Bots are fully independent of each other:
   in one bot and not in a dialog at all in another, at the same time;
 - each bot has its own webhook route (`/telegram/webhook/default`, `/telegram/webhook/support`), and
   artisan commands take the bot's alias as their first argument (`telegram:poll default`,
-  `telegram:routes support`).
+  `telegram:routes support`). The route segment is the bot's `name` by default; with
+  `repository=database` it can be changed to another column — see
+  [15.5](15-bot-source.md#155-a-custom-webhook-route-key-database-only).
 
 ## Next
 

@@ -14,7 +14,7 @@ final readonly class VerifyWebhookSecretMiddleware
 
     public function handle(Request $request, \Closure $next): Response
     {
-        $identity = $this->manager->findByName($request->route('botId'));
+        $identity = $this->manager->findByWebhookKey($request->route('botId'));
         $request->attributes->set('telegramBotIdentity', $identity);
 
         if (empty($identity->webhook_secret)) {
