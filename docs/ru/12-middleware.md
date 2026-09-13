@@ -51,6 +51,57 @@ Middleware выполняются в указанном порядке, до т�
 роутинга по командам/кнопкам/тексту — то есть middleware видит вообще каждый входящий апдейт этого
 бота, без исключений.
 
+## 12.4 Встроенные лимитеры: ThrottleMiddleware и ChatThrottleMiddleware
+
+Пакет поставляет два готовых middleware для защиты бота от флуда — не нужно писать логику на
+`RateLimiter` самостоятельно:
+
+```php
+use Appto\TelegramBot\Update\ChatThrottleMiddleware;
+use Appto\TelegramBot\Update\ThrottleMiddleware;
+
+protected function boot(): void
+{
+    $this->middleware([
+        ThrottleMiddleware::class.':20,60',       // не больше 20 апдейтов за 60 сек от одного юзера
+        ChatThrottleMiddleware::class.':100,60',  // и не больше 100 апдейтов за 60 сек на весь чат
+    ]);
+}
+```
+
+- `ThrottleMiddleware` считает лимит на пользователя (`userId()`, с фоллбэком на `chatId()` для
+  апдейтов без отправителя — например постов в канале).
+- `ChatThrottleMiddleware` считает лимит на весь чат целиком, независимо от того, кто именно пишет —
+  полезно в группах, где каждый участник по отдельности укладывается в свой личный лимит, а суммарно
+  чат всё равно флудится.
+- Параметры `maxAttempts,decaySeconds` — обычный синтаксис `Middleware:параметры` из
+  `Illuminate\Pipeline`; без параметров действуют дефолты 20 попыток / 60 секунд.
+
+При превышении лимита middleware **не отвечает пользователю само** — бросает
+`UserThrottleExceededException`/`ChatThrottleExceededException` (обе — подкласс
+`ThrottleExceededException`, несёт `$context` и `$retryAfter` — сколько секунд осталось до сброса).
+`Bot::dispatch()` ловит это исключение и передаёт в штатный Laravel `report()`. Пакет сам
+регистрирует `dontReport(ThrottleExceededException::class)`, поэтому по умолчанию — полная тишина:
+ни лога, ни ответа пользователю. Чтобы среагировать (ответить, отправить алерт, посчитать метрику) —
+обычный Laravel-путь в `bootstrap/app.php`, без специального API от пакета:
+
+```php
+use Appto\TelegramBot\Exceptions\ThrottleExceededException;
+use Appto\TelegramBot\Exceptions\UserThrottleExceededException;
+use Illuminate\Foundation\Configuration\Exceptions;
+
+->withExceptions(function (Exceptions $exceptions): void {
+    $exceptions->stopIgnoring(ThrottleExceededException::class); // снять тишину пакета
+    $exceptions->reportable(function (UserThrottleExceededException $e): void {
+        $e->context->reply('Слишком часто, подождите немного.');
+    });
+})
+```
+
+`$e->context` — тот же `UpdateContext`, что пришёл в middleware: доступны `->bot->id`, `->chatId()`,
+`->userId()`, `->reply()` и другие методы, так что видно, какой бот/чат/юзер превысил лимит, и можно
+сразу на него ответить.
+
 ## Дальше
 
 → [13. Webhook и long polling](13-delivery.md)

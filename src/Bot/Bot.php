@@ -7,6 +7,7 @@ namespace Appto\TelegramBot\Bot;
 use Appto\TelegramBot\Contracts\CallbackHandler;
 use Appto\TelegramBot\Dialog\DialogManager;
 use Appto\TelegramBot\Exceptions\RouterException;
+use Appto\TelegramBot\Exceptions\ThrottleExceededException;
 use Appto\TelegramBot\Routing\CallbackRouter;
 use Appto\TelegramBot\Routing\CommandRouter;
 use Appto\TelegramBot\Routing\RouterRegistry;
@@ -84,20 +85,24 @@ abstract class Bot
      */
     final public function dispatch(UpdateContext $context): void
     {
-        app(Pipeline::class)
-            ->send($context)
-            ->through($this->middleware)
-            ->then(function (UpdateContext $context): void {
-                if (app(DialogManager::class)->handle($context)) {
-                    return;
-                }
+        try {
+            app(Pipeline::class)
+                ->send($context)
+                ->through($this->middleware)
+                ->then(function (UpdateContext $context): void {
+                    if (app(DialogManager::class)->handle($context)) {
+                        return;
+                    }
 
-                if ($this->router()->dispatch($context)) {
-                    return;
-                }
+                    if ($this->router()->dispatch($context)) {
+                        return;
+                    }
 
-                $this->fallback($context);
-            });
+                    $this->fallback($context);
+                });
+        } catch (ThrottleExceededException $exception) {
+            report($exception);
+        }
     }
 
     public function router(): RouterRegistry

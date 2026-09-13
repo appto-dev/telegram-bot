@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Appto\TelegramBot\Tests;
 
 use Appto\TelegramBot\TelegramBotServiceProvider;
+use Illuminate\Cache\CacheServiceProvider;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Config\Repository as ConfigContract;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\DatabaseServiceProvider;
 use Illuminate\Encryption\EncryptionServiceProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\Facades\Facade;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Spatie\LaravelData\LaravelDataServiceProvider;
@@ -73,6 +76,10 @@ abstract class TestCase extends BaseTestCase
         // when no full Laravel skeleton (bootstrap/app.php) built it.
         $app->instance('env', 'testing');
         $app->singleton('files', fn () => new Filesystem);
+        // Mirrors what Application::configure()->withExceptions() wires in a real app's
+        // bootstrap/app.php — needed for report()/dontReport() (used by Bot::dispatch() and
+        // TelegramBotServiceProvider) to resolve to something.
+        $app->singleton(ExceptionHandler::class, Handler::class);
 
         $app->instance('config', new Repository([
             'app' => [
@@ -91,11 +98,18 @@ abstract class TestCase extends BaseTestCase
                     ],
                 ],
             ],
+            'cache' => [
+                'default' => 'array',
+                'stores' => [
+                    'array' => ['driver' => 'array'],
+                ],
+            ],
             'telegram-bot' => $this->telegramBotConfig(),
         ]));
 
         $app->register(DatabaseServiceProvider::class);
         $app->register(EncryptionServiceProvider::class);
+        $app->register(CacheServiceProvider::class);
         $app->register(LaravelDataServiceProvider::class);
         $app->register(TelegramBotServiceProvider::class);
 

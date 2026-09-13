@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-13
+
+### Added
+
+- `ThrottleMiddleware`/`ChatThrottleMiddleware` (`Update/`) — built-in per-user and per-chat rate
+  limiting for incoming updates, on top of `Illuminate\Support\Facades\RateLimiter`. Configurable via
+  the standard `Middleware:maxAttempts,decaySeconds` pipe syntax (defaults: 20/60).
+- `ThrottleExceededException` (abstract) plus `UserThrottleExceededException`/
+  `ChatThrottleExceededException` — thrown by the throttle middlewares instead of replying
+  themselves. `Bot::dispatch()` catches them and calls Laravel's `report()`; the package registers
+  `dontReport(ThrottleExceededException::class)` so the default behavior is silent. Apps opt into
+  custom handling (reply, alert, metrics) the normal Laravel way, via `bootstrap/app.php`'s
+  `stopIgnoring()` + `reportable()`.
+
+### Fixed
+
+- `UpdateContext::userId()`/`chatId()`/`isPrivate()` no longer emit "Undefined property" PHP
+  warnings on update types that don't declare a `from`/`chat`/`message` property at all (e.g.
+  `poll`, `chat_boost`) — not just when those are `null`.
+
 ## [0.3.0] - 2026-09-07
 
 ### Added

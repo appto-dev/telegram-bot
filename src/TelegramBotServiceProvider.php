@@ -18,8 +18,10 @@ use Appto\TelegramBot\Console\Commands\SetWebhookCommand;
 use Appto\TelegramBot\Dialog\DialogManager;
 use Appto\TelegramBot\Dialog\DialogStateRepository;
 use Appto\TelegramBot\Dialog\EloquentDialogStateRepository;
+use Appto\TelegramBot\Exceptions\ThrottleExceededException;
 use Appto\TelegramBot\Update\CacheDeduplicator;
 use Appto\TelegramBot\Update\Deduplicator;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
@@ -57,6 +59,12 @@ final class TelegramBotServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/../routes/webhook.php');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'telegram-bot');
+
+        // Silent by default: Bot::dispatch() already caught this and dropped the update — reporting
+        // it too would just be log noise. An app that wants to react (reply, alert, ...) opts back in
+        // via bootstrap/app.php: $exceptions->stopIgnoring(ThrottleExceededException::class) plus its
+        // own ->reportable(...), same convention Laravel itself uses for HttpException et al.
+        $this->app->make(ExceptionHandler::class)->dontReport(ThrottleExceededException::class);
 
         if ($this->app->runningInConsole()) {
             $this->commands([

@@ -69,7 +69,9 @@ final class UpdateContext implements CanReply
         $type = UpdateType::detect($this->update);
         $update = $this->update()->{$type->value};
 
-        return $update->chat?->id ?? $update->message?->chat?->id;
+        // `?? null` before the nullsafe chain: some update payloads (Poll, ChatBoost, ...) don't
+        // declare a `chat`/`message` property at all, and `?->` alone still warns on those.
+        return ($update->chat ?? null)?->id ?? ($update->message ?? null)?->chat?->id;
     }
 
     public function userId(): int|string|null
@@ -77,7 +79,7 @@ final class UpdateContext implements CanReply
         $type = UpdateType::detect($this->update);
         $update = $this->update()->{$type->value};
 
-        return $update->from?->id;
+        return ($update->from ?? null)?->id;
     }
 
     public function isCommand(): bool
@@ -100,6 +102,6 @@ final class UpdateContext implements CanReply
         $type = UpdateType::detect($this->update);
         $update = $this->update()->{$type->value};
 
-        return ($update->chat?->type ?? $update->message?->chat?->type) === 'private';
+        return (($update->chat ?? null)?->type ?? ($update->message ?? null)?->chat?->type) === 'private';
     }
 }
