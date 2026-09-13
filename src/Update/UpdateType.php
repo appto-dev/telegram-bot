@@ -63,7 +63,6 @@ enum UpdateType: string
      * Определяет тип по Update-объекту: берёт первый ключ, отличный от update_id.
      * Если пришёл тип, которого ещё нет в этом enum (Telegram время от времени добавляет новые),
      * возвращает null — вызывающий код сам решает, что делать (обычно fallback()).
-     * Текущий список по версии Bot API 10.2.
      */
     public static function detect(Update $update): ?self
     {
