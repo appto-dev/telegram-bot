@@ -6,11 +6,11 @@ namespace Appto\TelegramBot\Events;
 
 use Appto\TelegramBot\Bot\BotIdentity;
 
-final readonly class TelegramApiCallMade
+final readonly class TelegramApiCallRequested
 {
     public function __construct(
         public BotIdentity $bot,
         public string $method,
-        public array|bool $response,
+        public array $parameters,
     ) {}
 }

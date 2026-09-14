@@ -107,6 +107,11 @@ being whatever that step returned via `next()`/`complete()`. This is the only pl
 write to the database or run final business logic — not earlier, so you don't end up saving
 partial data if the user cancels mid-way.
 
+If you need to react to *any* dialog finishing/being cancelled — not just this one — without
+editing every `Dialog` subclass, there are also `DialogStarted`/`DialogCompleted`/`DialogCancelled`
+events (see [19. Events](19-events.md)); `onComplete()`/`onCancel()` remain the right place for a
+dialog's own logic, the events are for cross-cutting code.
+
 ## 10.6 Cancelling a dialog
 
 The built-in `/cancel` command cancels the active dialog:

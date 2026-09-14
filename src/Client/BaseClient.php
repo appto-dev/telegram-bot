@@ -6,6 +6,7 @@ namespace Appto\TelegramBot\Client;
 
 use Appto\TelegramBot\Bot\BotIdentity;
 use Appto\TelegramBot\Events\TelegramApiCallMade;
+use Appto\TelegramBot\Events\TelegramApiCallRequested;
 use Appto\TelegramBot\Exceptions\TelegramApiException;
 use Appto\TelegramBot\Type\InputFile;
 use Appto\TelegramBot\Type\ResponseParameters;
@@ -33,6 +34,8 @@ class BaseClient
 
     public function call(string $method, array $parameters = []): bool|int|string|array
     {
+        event(new TelegramApiCallRequested($this->identity, $method, $parameters));
+
         $parameters = $this->normalizeParameters($parameters);
 
         $withMultipart = false;
@@ -70,7 +73,7 @@ class BaseClient
 
         $result = $payload['result'] ?? (bool) $payload['ok'];
 
-        event(new TelegramApiCallMade($method, $result));
+        event(new TelegramApiCallMade($this->identity, $method, $result));
 
         return $result;
     }

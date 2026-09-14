@@ -34,6 +34,10 @@ Writes raw incoming and outgoing payloads to `storage/logs/telegram-traffic.log`
 bug doesn't reproduce clearly in the console and you need to attach a log to an issue, or review it
 later.
 
+For programmatic access to the same traffic (not just a log file) — e.g. custom monitoring or
+metrics — listen for the `TelegramApiCallRequested`/`TelegramApiCallMade` events instead; they
+fire on every Bot API call regardless of `telegram:poll`'s flags (see [19. Events](19-events.md)).
+
 ## 16.4 Verbose update output: `-v`
 
 ```bash

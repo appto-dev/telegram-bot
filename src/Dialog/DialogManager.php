@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Appto\TelegramBot\Dialog;
 
+use Appto\TelegramBot\Events\DialogCancelled;
+use Appto\TelegramBot\Events\DialogCompleted;
+use Appto\TelegramBot\Events\DialogStarted;
 use Appto\TelegramBot\Update\UpdateContext;
 
 final readonly class DialogManager
@@ -24,6 +27,8 @@ final readonly class DialogManager
 
         $this->repository->save($state);
 
+        event(new DialogStarted($context, $dialog));
+
         $this->enterStep($dialog, $state, $context);
     }
 
@@ -42,6 +47,7 @@ final readonly class DialogManager
         /** @var Dialog $dialog */
         $dialog = app($dialogState->handler);
         $dialog->onCancel($context);
+        event(new DialogCancelled($context, $dialog));
 
         $this->repository->delete($context->bot->id, $context->chatId(), $context->userId());
     }
@@ -125,6 +131,7 @@ final readonly class DialogManager
     private function complete(Dialog $dialog, DialogState $state, UpdateContext $context): void
     {
         $dialog->onComplete($context, $state->answers);
+        event(new DialogCompleted($context, $dialog, $state->answers));
         $this->repository->delete($context->bot->id, $state->chatId, $state->userId);
     }
 

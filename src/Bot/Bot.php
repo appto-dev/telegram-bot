@@ -6,6 +6,7 @@ namespace Appto\TelegramBot\Bot;
 
 use Appto\TelegramBot\Contracts\CallbackHandler;
 use Appto\TelegramBot\Dialog\DialogManager;
+use Appto\TelegramBot\Events\UpdateReceived;
 use Appto\TelegramBot\Exceptions\RouterException;
 use Appto\TelegramBot\Exceptions\ThrottleExceededException;
 use Appto\TelegramBot\Routing\CallbackRouter;
@@ -85,6 +86,8 @@ abstract class Bot
      */
     final public function dispatch(UpdateContext $context): void
     {
+        event(new UpdateReceived($context));
+
         try {
             app(Pipeline::class)
                 ->send($context)

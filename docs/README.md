@@ -25,4 +25,5 @@
 | 16 | [Отладка и диагностика](ru/16-debugging.md) | [Debugging](en/16-debugging.md) |
 | 17 | [Рецепты](ru/17-recipes.md) | [Recipes](en/17-recipes.md) |
 | 18 | [Известные ограничения](ru/18-limitations.md) | [Known limitations](en/18-limitations.md) |
-| 19 | [Справочник](ru/19-reference.md) | [Reference](en/19-reference.md) |
+| 19 | [События](ru/19-events.md) | [Events](en/19-events.md) |
+| 20 | [Справочник](ru/20-reference.md) | [Reference](en/20-reference.md) |

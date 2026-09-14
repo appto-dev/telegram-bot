@@ -1,6 +1,6 @@
-# 19. Reference
+# 20. Reference
 
-## 19.1 Config keys (`config/telegram-bot.php`)
+## 20.1 Config keys (`config/telegram-bot.php`)
 
 | Key | Purpose |
 |---|---|
@@ -11,7 +11,7 @@
 | `unauthorized.message` | Default message on access denial (env `TELEGRAM_BOT_UNAUTHORIZED_MESSAGE`) |
 | `unauthorized.show_alert` | Whether the denial shows as an alert for callback queries |
 
-## 19.2 Artisan commands
+## 20.2 Artisan commands
 
 | Command | Purpose |
 |---|---|
@@ -21,7 +21,7 @@
 | `telegram:webhook-secret` | Generate a random string for `TELEGRAM_BOT_WEBHOOK_SECRET` (see [2.2](02-installation.md#22-environment-variables)). Same as calling `Appto\TelegramBot\Support\SecretGenerator::generate()` from code |
 | `telegram:routes {bot?} [--type=commands\|callbacks\|text]` | List registered routes |
 
-## 19.3 Glossary
+## 20.3 Glossary
 
 - **Command** — a message like `/name`, handled via `onCommand()`.
 - **Callback** — an inline-button tap, arrives as a `callback_query`, handled via `onCallback()`.
@@ -33,9 +33,13 @@
   command/callback pattern/text).
 - **Update context (`UpdateContext`)** — the object carrying the incoming update's data plus
   `reply*()` methods for replying in the current chat.
+- **Event** — a Laravel event the package dispatches at a specific moment (an update arrived, a
+  Bot API call was made, a dialog started/finished) so application code can react via
+  `Event::listen()` without modifying the package (see [19. Events](19-events.md)).
 
 ## See also
 
 - [1. Introduction](01-introduction.md)
 - [3. How bot development works](03-development-philosophy.md)
 - [17. Recipes](17-recipes.md)
+- [19. Events](19-events.md)

@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Six new events in `Appto\TelegramBot\Events\`, dispatched via Laravel's standard `event()`:
+  `TelegramApiCallRequested`/`TelegramApiCallMade` (before/after every Bot API call, from
+  `BaseClient::call()`), `UpdateReceived` (at the top of `Bot::dispatch()`, before middleware and
+  routing), and `DialogStarted`/`DialogCompleted`/`DialogCancelled` (from `DialogManager`). Pure
+  extension points — the package only dispatches them, application code decides what to do via
+  `Event::listen()`; `Dialog::onComplete()`/`onCancel()` are unaffected and still run first. See
+  [docs: 19. Events](docs/en/19-events.md).
+- `TelegramApiCallMade` now also carries `bot: BotIdentity` (previously just `method`/`response`).
+
 ## [0.4.0] - 2026-09-13
 
 ### Added
