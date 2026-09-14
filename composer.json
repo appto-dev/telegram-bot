@@ -31,7 +31,7 @@
     "illuminate/queue": "^12.0|^13.0",
     "illuminate/cache": "^12.0|^13.0",
     "spatie/laravel-data": "^4.23",
-    "appto-team/telegram-bot-cast-laravel": "^3.0",
+    "appto-team/telegram-bot-cast-laravel": "^3.2.10.3",
     "laravel/prompts": "^0.3.23"
   },
   "require-dev": {

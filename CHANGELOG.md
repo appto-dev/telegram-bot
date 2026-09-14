@@ -18,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [docs: 19. Events](docs/en/19-events.md).
 - `TelegramApiCallMade` now also carries `bot: BotIdentity` (previously just `method`/`response`).
 
+### Fixed
+
+- `composer.json` required `appto-team/telegram-bot-cast-laravel: ^3.0`, but the client traits
+  rely on APIs (`EphemeralMessageParameters` across most `send*()` methods) only present since
+  `3.2.10.3`. Under `--prefer-lowest`, Composer could resolve an older 3.x release whose
+  `AvailableMethods` interface didn't match — a PHP fatal error at class-load time. Tightened to
+  `^3.2.10.3`.
+
 ## [0.4.0] - 2026-09-13
 
 ### Added
