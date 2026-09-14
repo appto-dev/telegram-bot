@@ -12,6 +12,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\DatabaseServiceProvider;
 use Illuminate\Encryption\EncryptionServiceProvider;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\Facades\Facade;
@@ -104,12 +105,17 @@ abstract class TestCase extends BaseTestCase
                     'array' => ['driver' => 'array'],
                 ],
             ],
+            'filesystems' => [
+                'default' => 'local',
+                'disks' => [],
+            ],
             'telegram-bot' => $this->telegramBotConfig(),
         ]));
 
         $app->register(DatabaseServiceProvider::class);
         $app->register(EncryptionServiceProvider::class);
         $app->register(CacheServiceProvider::class);
+        $app->register(FilesystemServiceProvider::class);
         $app->register(LaravelDataServiceProvider::class);
         $app->register(TelegramBotServiceProvider::class);
 
