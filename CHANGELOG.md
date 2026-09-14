@@ -18,6 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [docs: 19. Events](docs/en/19-events.md).
 - `TelegramApiCallMade` now also carries `bot: BotIdentity` (previously just `method`/`response`).
 
+### Changed
+
+- `Appto\TelegramBot\Client\FileInput` renamed to `Upload`, with named constructors renamed to
+  match: `fromContent()` → `content()`, `fromResource()` → `resource()`, `fromFile()` → `file()`,
+  `fromGdImage()` → `image()`. `file()` now reads through a Laravel `Storage` disk instead of raw
+  filesystem calls — its argument is a path relative to a disk (`Storage::disk()`), not an
+  arbitrary OS path, and it takes an optional `disk: ` parameter. See
+  [docs: 9. Replying to users](docs/en/09-replies.md).
+
 ### Fixed
 
 - `composer.json` required `appto-team/telegram-bot-cast-laravel: ^3.0`, but the client traits

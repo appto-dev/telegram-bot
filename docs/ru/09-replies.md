@@ -31,14 +31,15 @@ $context->replyDice();                              // кубик/дартс/с�
 $context->replyChatAction(ChatAction::Typing);       // «печатает…»
 ```
 
-Файл для отправки — объект `FileInput`, поддерживает несколько источников:
+Файл для отправки — объект `Upload`, поддерживает несколько источников:
 
 ```php
-use Appto\TelegramBot\Client\FileInput;
+use Appto\TelegramBot\Client\Upload;
 
-FileInput::fromFile('/path/to/file.jpg');
-FileInput::fromContent($binaryString, 'file.jpg');
-FileInput::fromResource($resource, 'file.jpg');
+Upload::file('promo.jpg');                          // путь относительно диска (по умолчанию — 'local')
+Upload::file('promo.jpg', disk: 's3');
+Upload::content('file.jpg', $binaryString);
+Upload::resource('file.jpg', $resource);
 ```
 
 ## 9.3 Когда нужно больше — полный доступ к Bot API

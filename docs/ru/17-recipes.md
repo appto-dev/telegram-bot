@@ -50,12 +50,12 @@ final class AdminOnlyCommand implements CommandHandler, RequiresPermission, HasU
 ## 17.5 Отправить фото/альбом/документ
 
 ```php
-$context->replyPhoto(FileInput::fromFile(storage_path('app/promo.jpg')), caption: 'Новинка!');
+$context->replyPhoto(Upload::file('promo.jpg'), caption: 'Новинка!');
 $context->replyMediaGroup([
-    FileInput::fromFile(storage_path('app/1.jpg')),
-    FileInput::fromFile(storage_path('app/2.jpg')),
+    Upload::file('1.jpg'),
+    Upload::file('2.jpg'),
 ]);
-$context->replyDocument(FileInput::fromFile(storage_path('app/prайс.pdf')));
+$context->replyDocument(Upload::file('prайс.pdf'));
 ```
 
 Подробнее — [9. Ответы пользователю](09-replies.md).

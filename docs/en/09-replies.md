@@ -31,14 +31,15 @@ $context->replyDice();                              // dice/darts/slot machine
 $context->replyChatAction(ChatAction::Typing);       // "typing…"
 ```
 
-Files to send are `FileInput` objects, with several sources:
+Files to send are `Upload` objects, with several sources:
 
 ```php
-use Appto\TelegramBot\Client\FileInput;
+use Appto\TelegramBot\Client\Upload;
 
-FileInput::fromFile('/path/to/file.jpg');
-FileInput::fromContent($binaryString, 'file.jpg');
-FileInput::fromResource($resource, 'file.jpg');
+Upload::file('promo.jpg');                          // path relative to the disk (default: 'local')
+Upload::file('promo.jpg', disk: 's3');
+Upload::content('file.jpg', $binaryString);
+Upload::resource('file.jpg', $resource);
 ```
 
 ## 9.3 When you need more — full Bot API access

@@ -51,12 +51,12 @@ More in [11. Permissions](11-permissions.md).
 ## 17.5 Send a photo/album/document
 
 ```php
-$context->replyPhoto(FileInput::fromFile(storage_path('app/promo.jpg')), caption: 'New arrival!');
+$context->replyPhoto(Upload::file('promo.jpg'), caption: 'New arrival!');
 $context->replyMediaGroup([
-    FileInput::fromFile(storage_path('app/1.jpg')),
-    FileInput::fromFile(storage_path('app/2.jpg')),
+    Upload::file('1.jpg'),
+    Upload::file('2.jpg'),
 ]);
-$context->replyDocument(FileInput::fromFile(storage_path('app/pricelist.pdf')));
+$context->replyDocument(Upload::file('pricelist.pdf'));
 ```
 
 More in [9. Replying to users](09-replies.md).

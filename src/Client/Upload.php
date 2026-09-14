@@ -6,8 +6,9 @@ namespace Appto\TelegramBot\Client;
 
 use Appto\TelegramBot\Exceptions\InvalidInputFileException;
 use Appto\TelegramBot\Type\InputFile;
+use Illuminate\Support\Facades\Storage;
 
-final readonly class FileInput implements InputFile
+final readonly class Upload implements InputFile
 {
     /** @param resource|string $content */
     private function __construct(private string $filename, private mixed $content) {}
@@ -35,12 +36,12 @@ final readonly class FileInput implements InputFile
         return $stream;
     }
 
-    public static function fromContent(string $filename, string $content): self
+    public static function content(string $filename, string $content): self
     {
         return new self($filename, $content);
     }
 
-    public static function fromResource(string $filename, $resource): self
+    public static function resource(string $filename, $resource): self
     {
         if (! is_resource($resource)) {
             throw InvalidInputFileException::unreadable($filename);
@@ -49,26 +50,24 @@ final readonly class FileInput implements InputFile
         return new self($filename, $resource);
     }
 
-    public static function fromFile(string $path): self
+    public static function file(string $path, ?string $disk = null): self
     {
-        if (! is_file($path) || ! is_readable($path)) {
+        if (! Storage::disk($disk)->exists($path)) {
             throw InvalidInputFileException::notFound($path);
         }
 
-        if (filesize($path) === 0) {
+        if (! Storage::disk($disk)->size($path)) {
             throw InvalidInputFileException::empty($path);
         }
 
-        $resource = fopen($path, 'rb');
-
-        if ($resource === false) {
+        if (! $resource = Storage::disk($disk)->readStream($path)) {
             throw InvalidInputFileException::unreadable($path);
         }
 
         return new self(basename($path), $resource);
     }
 
-    public static function fromGdImage(string $filename, \GdImage $image, int $quality = -1, int $filters = -1, int $speed = -1): self
+    public static function image(string $filename, \GdImage $image, int $quality = -1, int $filters = -1, int $speed = -1): self
     {
         $stream = fopen('php://temp', 'r+');
 

@@ -105,7 +105,7 @@ class BaseClient
     {
         foreach ($parameters as $key => $value) {
             if ($value instanceof InputFile || isset($value['attach'])) {
-                /* @var FileInput $value */
+                /* @var Upload $value */
                 $parameters[$key] = $value->getAttachName();
                 $parameters[$value->getFilename()] = $value;
 
