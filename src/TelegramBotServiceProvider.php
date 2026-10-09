@@ -21,8 +21,8 @@ use Appto\TelegramBot\Dialog\EloquentDialogStateRepository;
 use Appto\TelegramBot\Exceptions\ThrottleExceededException;
 use Appto\TelegramBot\Update\CacheDeduplicator;
 use Appto\TelegramBot\Update\Deduplicator;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\ServiceProvider;
 
 final class TelegramBotServiceProvider extends ServiceProvider
@@ -52,6 +52,18 @@ final class TelegramBotServiceProvider extends ServiceProvider
         $this->app->singleton(DialogStateRepository::class, EloquentDialogStateRepository::class);
 
         $this->app->singleton(DialogManager::class);
+
+        // Silent by default: Bot::dispatch() already caught this and dropped the update — reporting
+        // it too would just be log noise. An app that wants to react (reply, alert, ...) opts back in
+        // via bootstrap/app.php: $exceptions->stopIgnoring(ThrottleExceededException::class) plus its
+        // own ->reportable(...), same convention Laravel itself uses for HttpException et al.
+        // Hooked on the concrete Handler rather than the contract: in console, Collision resolves the
+        // handler during register() and rebinds the contract to its own wrapper without dontReport().
+        // `resolving` (not afterResolving) so it runs before bootstrap/app.php's withExceptions()
+        // callback, letting the app's stopIgnoring() win.
+        $this->app->resolving(Handler::class, function (Handler $handler): void {
+            $handler->dontReport(ThrottleExceededException::class);
+        });
     }
 
     public function boot(): void
@@ -59,12 +71,6 @@ final class TelegramBotServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/../routes/webhook.php');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'telegram-bot');
-
-        // Silent by default: Bot::dispatch() already caught this and dropped the update — reporting
-        // it too would just be log noise. An app that wants to react (reply, alert, ...) opts back in
-        // via bootstrap/app.php: $exceptions->stopIgnoring(ThrottleExceededException::class) plus its
-        // own ->reportable(...), same convention Laravel itself uses for HttpException et al.
-        $this->app->make(ExceptionHandler::class)->dontReport(ThrottleExceededException::class);
 
         if ($this->app->runningInConsole()) {
             $this->commands([

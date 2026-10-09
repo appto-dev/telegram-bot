@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Installing the package into an app with `nunomaduro/collision` no longer fails `package:discover`
+  (and every other artisan command) with `Call to undefined method ...ExceptionHandler::dontReport()`.
+  The `dontReport(ThrottleExceededException::class)` default is now applied to the concrete
+  `Illuminate\Foundation\Exceptions\Handler` as it resolves, so it also survives Collision's console
+  wrapper around the exception handler.
+- `$exceptions->stopIgnoring(ThrottleExceededException::class)` in `bootstrap/app.php` now actually
+  re-enables reporting — previously the package re-applied `dontReport()` after the app's
+  `withExceptions()` callback had run, silently undoing it.
+
 ## [0.5.0] - 2026-09-14
 
 ### Added

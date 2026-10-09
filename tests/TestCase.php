@@ -63,6 +63,12 @@ abstract class TestCase extends BaseTestCase
         ];
     }
 
+    /**
+     * Runs after every provider registered, right before boot. Override in a test class to mimic what
+     * a real app or another package does in that window (e.g. Collision wrapping the exception handler).
+     */
+    protected function beforeBoot(Application $app): void {}
+
     private function createApplication(): Application
     {
         $basePath = sys_get_temp_dir().'/telegram-bot-tests-'.bin2hex(random_bytes(6));
@@ -118,6 +124,8 @@ abstract class TestCase extends BaseTestCase
         $app->register(FilesystemServiceProvider::class);
         $app->register(LaravelDataServiceProvider::class);
         $app->register(TelegramBotServiceProvider::class);
+
+        $this->beforeBoot($app);
 
         $app->boot();
 
