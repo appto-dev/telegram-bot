@@ -10,6 +10,7 @@ use Appto\TelegramBot\Webhook\VerifyWebhookSecretMiddleware;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class VerifyWebhookSecretMiddlewareTest extends TestCase
 {
@@ -70,12 +71,12 @@ final class VerifyWebhookSecretMiddlewareTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    public function test_it_throws_for_an_unknown_bot_id(): void
+    public function test_it_returns_not_found_for_an_unknown_bot_id(): void
     {
         $middleware = $this->app->make(BotManager::class);
         $request = $this->requestFor('missing', secretHeader: null);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(NotFoundHttpException::class);
 
         (new VerifyWebhookSecretMiddleware($middleware))->handle($request, fn () => new Response);
     }

@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Upload` files nested inside other parameters (e.g. `InputMediaPhoto` in `sendMediaGroup()`) are
   now sent. Previously they stayed inside the nested array and never reached the multipart body;
   now every nested file is replaced with its `attach://` reference and sent at the top level.
+- A webhook request for an unknown bot now gets `404 Not Found` instead of a `500` error.
 
 ## [0.5.1] - 2026-10-09
 
