@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-10-09
+
 ### Fixed
 
 - Installing the package into an app with `nunomaduro/collision` no longer fails `package:discover`
@@ -125,7 +127,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   routing, stateful dialogs, built-in authorization and `/help`, webhook and long-polling
   delivery, config- and database-backed bot repositories.
 
-[Unreleased]: https://github.com/appto-dev/telegram-bot/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/appto-dev/telegram-bot/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/appto-dev/telegram-bot/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/appto-dev/telegram-bot/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/appto-dev/telegram-bot/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/appto-dev/telegram-bot/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/appto-dev/telegram-bot/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/appto-dev/telegram-bot/compare/v0.1.0...v0.1.1
