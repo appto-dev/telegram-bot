@@ -26,8 +26,7 @@ final class BaseClientAttachmentsTest extends TestCase
 
             return $request->isMultipart()
                 && $parts['photo']['contents'] === 'attach://cat.jpg'
-                && $parts['cat.jpg']['filename'] === 'cat.jpg'
-                && (string) $parts['cat.jpg']['contents'] === 'jpeg-bytes';
+                && $this->filesFromBody($request) === ['cat.jpg' => 'jpeg-bytes'];
         });
     }
 
@@ -55,8 +54,7 @@ final class BaseClientAttachmentsTest extends TestCase
             return $request->isMultipart()
                 && $media[0]['media'] === 'attach://first.jpg'
                 && $media[1]['media'] === 'attach://second.jpg'
-                && (string) $parts['first.jpg']['contents'] === 'first-bytes'
-                && (string) $parts['second.jpg']['contents'] === 'second-bytes';
+                && $this->filesFromBody($request) === ['first.jpg' => 'first-bytes', 'second.jpg' => 'second-bytes'];
         });
     }
 
@@ -79,5 +77,22 @@ final class BaseClientAttachmentsTest extends TestCase
     private function partsByName(Request $request): array
     {
         return collect($request->data())->keyBy('name')->all();
+    }
+
+    /**
+     * File parts are read from the raw multipart body: the recorded request data holds the file
+     * stream itself, which Guzzle has already closed after sending on early Laravel 12 releases.
+     *
+     * @return array<string, string> file part name => contents
+     */
+    private function filesFromBody(Request $request): array
+    {
+        preg_match_all(
+            '/name="(?<name>[^"]+)"; filename="[^"]*"\r\n(?:[^\r\n]+\r\n)*\r\n(?<contents>.*?)\r\n--/s',
+            $request->body(),
+            $matches,
+        );
+
+        return array_combine($matches['name'], $matches['contents']);
     }
 }
