@@ -55,7 +55,7 @@ key column (see 15.5) — backfill it yourself after migrating.
 
 ## 15.5 A custom webhook route key (database only)
 
-By default the webhook route is `/telegram/webhook/{name}` — the same human-readable name you use
+By default the webhook route is `/api/telegram/webhook/{name}` — the same human-readable name you use
 with `telegram:poll`, `telegram:set-webhook`, etc. That's predictable/guessable, which may not be
 acceptable for a public production URL.
 

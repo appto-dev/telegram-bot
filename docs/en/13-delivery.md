@@ -58,7 +58,7 @@ php artisan telegram:set-webhook default
 php artisan telegram:delete-webhook default
 ```
 
-Every bot gets its own route: `POST /telegram/webhook/{botName}`. Requests are authenticated with a
+Every bot gets its own route: `POST /api/telegram/webhook/{botName}`. Requests are authenticated with a
 secret token Telegram sends in a header — it's derived deterministically from the app's `APP_KEY`
 and the bot's token, so it can't be forged without knowing `APP_KEY`. There's nothing extra to
 store or sync between environments — if `APP_KEY` or the bot token changes, the secret is

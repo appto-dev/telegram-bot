@@ -7,7 +7,7 @@ use Appto\TelegramBot\Webhook\WebhookController;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Support\Facades\Route;
 
-Route::any('/telegram/webhook/{botId}', WebhookController::class)
+Route::any('/api/telegram/webhook/{botId}', WebhookController::class)
     ->name('telegram.webhook')
-    ->middleware(VerifyWebhookSecretMiddleware::class)
+    ->middleware(['api', VerifyWebhookSecretMiddleware::class])
     ->withoutMiddleware(PreventRequestForgery::class);

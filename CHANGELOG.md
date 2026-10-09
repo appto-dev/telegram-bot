@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Breaking:** the webhook route moved from `/telegram/webhook/{botId}` to
+  `/api/telegram/webhook/{botId}` and now runs through the `api` middleware group. Re-register
+  webhooks with Telegram (`setWebhook`) after upgrading.
 - `HelpCommand` and `CancelCommand` implement `HasDescription`, so `/help` and `/cancel` now appear in
   the `/help` list, described in the app's locale. `help.command_description` was shipped but unused.
 

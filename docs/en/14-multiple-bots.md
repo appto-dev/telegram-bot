@@ -30,7 +30,7 @@ Bots are fully independent of each other:
   command names are identical;
 - dialog state is scoped to a specific (bot, chat, user) triple — the same person can be mid-dialog
   in one bot and not in a dialog at all in another, at the same time;
-- each bot has its own webhook route (`/telegram/webhook/default`, `/telegram/webhook/support`), and
+- each bot has its own webhook route (`/api/telegram/webhook/default`, `/api/telegram/webhook/support`), and
   artisan commands take the bot's alias as their first argument (`telegram:poll default`,
   `telegram:routes support`). The route segment is the bot's `name` by default; with
   `repository=database` it can be changed to another column — see

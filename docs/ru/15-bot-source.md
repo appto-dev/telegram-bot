@@ -56,7 +56,7 @@ php artisan telegram:migrate-bots-to-database [--force] [--dry-run]
 
 ## 15.5 Свой ключ для вебхука (только database)
 
-По умолчанию маршрут вебхука — `/telegram/webhook/{name}`, то есть тот же человекочитаемый
+По умолчанию маршрут вебхука — `/api/telegram/webhook/{name}`, то есть тот же человекочитаемый
 алиас, что используется в `telegram:poll`, `telegram:set-webhook` и т.д. Это предсказуемо/угадываемо,
 что не всегда приемлемо для публичного продакшен-URL.
 

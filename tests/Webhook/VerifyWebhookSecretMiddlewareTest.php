@@ -83,7 +83,7 @@ final class VerifyWebhookSecretMiddlewareTest extends TestCase
 
     private function requestFor(string $botId, ?string $secretHeader): Request
     {
-        $request = Request::create('/telegram/webhook/'.$botId, 'POST');
+        $request = Request::create('/api/telegram/webhook/'.$botId, 'POST');
 
         if ($secretHeader !== null) {
             $request->headers->set('X-Telegram-Bot-Api-Secret-Token', $secretHeader);

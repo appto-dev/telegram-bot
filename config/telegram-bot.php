@@ -52,7 +52,7 @@ return [
     'database' => [
         /*
         | Which telegram_bots column is used as the public webhook route
-        | segment (/telegram/webhook/{key}) instead of "name".
+        | segment (/api/telegram/webhook/{key}) instead of "name".
         |
         | Point this at a column you added yourself (e.g. "uuid") via your
         | own migration extending telegram_bots, if you don't want webhook
