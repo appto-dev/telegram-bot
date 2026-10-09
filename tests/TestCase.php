@@ -16,6 +16,7 @@ use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Translation\TranslationServiceProvider;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Spatie\LaravelData\LaravelDataServiceProvider;
 
@@ -93,6 +94,8 @@ abstract class TestCase extends BaseTestCase
                 'key' => 'base64:'.base64_encode(random_bytes(32)),
                 'cipher' => 'AES-256-CBC',
                 'name' => 'Testing',
+                'locale' => 'en',
+                'fallback_locale' => 'en',
             ],
             'database' => [
                 'default' => 'testing',
@@ -122,6 +125,7 @@ abstract class TestCase extends BaseTestCase
         $app->register(EncryptionServiceProvider::class);
         $app->register(CacheServiceProvider::class);
         $app->register(FilesystemServiceProvider::class);
+        $app->register(TranslationServiceProvider::class);
         $app->register(LaravelDataServiceProvider::class);
         $app->register(TelegramBotServiceProvider::class);
 

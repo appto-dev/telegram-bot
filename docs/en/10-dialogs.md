@@ -122,6 +122,8 @@ use Appto\TelegramBot\Dialog\CancelCommand;
 $this->onCommand('cancel', CancelCommand::class);
 ```
 
+If `/help` is registered, `/cancel` shows up in its list with the description from `telegram-bot::dialog.cancel_description`.
+
 On top of that, **any** command typed mid-dialog cancels it automatically (`onCancel()` runs), and
 the command itself is then processed normally — so users never get "stuck" in a dialog if they
 change their mind and type `/start` again.

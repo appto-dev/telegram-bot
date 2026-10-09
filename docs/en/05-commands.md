@@ -54,6 +54,14 @@ $this->onCommand('help', HelpCommand::class);
 A command that doesn't implement `HasDescription` simply won't appear in `/help` — it keeps
 working normally otherwise.
 
+`/help` and `/cancel` (see [10.6](10-dialogs.md#106-cancelling-a-dialog)) list themselves too: their
+descriptions and the list title come from the package translations (`telegram-bot::help`,
+`telegram-bot::dialog`) in the app's locale. To change the wording, publish the translations and edit them:
+
+```bash
+php artisan vendor:publish --tag=telegram-bot-lang
+```
+
 ## 5.4 Restricting access
 
 If a command shouldn't be available to everyone, implement `RequiresPermission`:

@@ -121,6 +121,8 @@ use Appto\TelegramBot\Dialog\CancelCommand;
 $this->onCommand('cancel', CancelCommand::class);
 ```
 
+Если подключён `/help`, `/cancel` появится в его списке с описанием из `telegram-bot::dialog.cancel_description`.
+
 Кроме того, **любая** команда, введённая посреди диалога, автоматически его отменяет (вызывается
 `onCancel()`), а сама команда после этого обрабатывается как обычно — то есть пользователь не
 «застревает» в диалоге, если передумал и написал `/start` заново.

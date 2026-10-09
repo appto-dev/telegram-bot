@@ -96,6 +96,16 @@ return [
         RequestOptions::CONNECT_TIMEOUT => 5,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Unauthorized
+    |--------------------------------------------------------------------------
+    |
+    | Default reply when a RequiresPermission handler denies access. The value
+    | goes through __(), so it may be a translation key — the package ships
+    | "telegram-bot::auth.unauthorized" (en, ru). Null means stay silent.
+    |
+    */
     'unauthorized' => [
         'message' => env('TELEGRAM_BOT_UNAUTHORIZED_MESSAGE'),
         'show_alert' => true,

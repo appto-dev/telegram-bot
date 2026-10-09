@@ -53,6 +53,16 @@ repeat `HasUnauthorizedMessage` in every class — set a default in the config i
 
 It's used whenever a handler doesn't override its own message via `HasUnauthorizedMessage`.
 
+The value goes through `__()`, so it can be a translation key. The package ships one —
+`telegram-bot::auth.unauthorized` ("You don't have access to this command." / «У вас нет доступа к
+этой команде.»), which replies in the app's locale:
+
+```php
+'message' => env('TELEGRAM_BOT_UNAUTHORIZED_MESSAGE', 'telegram-bot::auth.unauthorized'),
+```
+
+By default there is no message (`null`) — the bot silently ignores a restricted command.
+
 ## 11.4 Effect on `/help`
 
 The built-in `/help` command (see

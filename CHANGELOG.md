@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `telegram-bot::auth.unauthorized` translation (en, ru) — a ready-made rejection text for
+  `telegram-bot.unauthorized.message`. The default is still `null` (silent).
+- `telegram-bot::dialog.cancel_description` translation (en, ru).
+
+### Changed
+
+- `HelpCommand` and `CancelCommand` implement `HasDescription`, so `/help` and `/cancel` now appear in
+  the `/help` list, described in the app's locale. `help.command_description` was shipped but unused.
+
 ### Fixed
 
 - A command sent with arguments (e.g. a deep link `/start ref123`) now routes to its handler:

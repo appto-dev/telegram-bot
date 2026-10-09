@@ -10,9 +10,14 @@ use Appto\TelegramBot\Contracts\HasDescription;
 use Appto\TelegramBot\Contracts\RequiresPermission;
 use Appto\TelegramBot\Update\UpdateContext;
 
-final readonly class HelpCommand implements CommandHandler
+final readonly class HelpCommand implements CommandHandler, HasDescription
 {
     public function __construct(private BotManager $bots) {}
+
+    public static function description(): string
+    {
+        return __('telegram-bot::help.command_description');
+    }
 
     public function handle(UpdateContext $context): void
     {

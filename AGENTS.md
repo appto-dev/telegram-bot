@@ -42,6 +42,9 @@ Handlers run through `HandlerInvoker` (container-resolved, `RequiresPermission` 
 ## Conventions
 
 - `declare(strict_types=1)`; classes `final` / `readonly` where possible; typed signatures; PHPDoc over inline comments.
+- Text a bot user sees goes through `__('telegram-bot::file.key')`, never a literal; add every key to both
+  `resources/lang/en` and `resources/lang/ru` (`tests/Lang/TranslationsTest.php` checks the pair).
+  Artisan output, `telegram:poll` debug output and exception messages stay English literals.
 - Comments explain *why*, in English (a few older ones are Russian — leave them).
 - Tests in `tests/`, mirroring `src/` folders. `Tests\TestCase` boots a bare `Illuminate\Foundation\Application`
   (no testbench) with in-memory SQLite; build payloads with `Tests\Support\UpdateFactory`, fixtures in `tests/Fixtures`.

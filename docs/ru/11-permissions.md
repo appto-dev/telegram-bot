@@ -54,6 +54,16 @@ public function unauthorizedMessage(UpdateContext $context): ?string
 Он используется, если конкретный хендлер не переопределил своё сообщение через
 `HasUnauthorizedMessage`.
 
+Значение проходит через `__()`, поэтому можно указать ключ перевода. В пакете уже есть готовый —
+`telegram-bot::auth.unauthorized` («У вас нет доступа к этой команде.» / «You don't have access to
+this command.»), он отвечает на языке приложения:
+
+```php
+'message' => env('TELEGRAM_BOT_UNAUTHORIZED_MESSAGE', 'telegram-bot::auth.unauthorized'),
+```
+
+По умолчанию сообщения нет (`null`) — бот молча игнорирует закрытую команду.
+
 ## 11.4 Влияние на `/help`
 
 Встроенная команда `/help` (см. [5.3](05-commands.md#53-команда-в-help)) автоматически показывает
