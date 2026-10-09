@@ -51,9 +51,9 @@ final class UpdateContext implements CanReply
         }
 
         /** @var MessageEntity $entity */
-        $entity = array_filter($message->entities,
+        $entity = array_values(array_filter($message->entities,
             fn (MessageEntity $entity) => $entity->type === MessageEntityType::BOT_COMMAND->value
-        );
+        ));
 
         if (! $entity) {
             return null;
@@ -61,7 +61,7 @@ final class UpdateContext implements CanReply
 
         $command = mb_substr($message->text, $entity[0]->offset + 1, $entity[0]->length);
 
-        return strtok($command, '@');
+        return strtok(rtrim($command), '@');
     }
 
     public function chatId(): int|string|null

@@ -66,10 +66,11 @@ final class UpdateFactory
     /**
      * A "/command" (optionally "/command@botname") message, with the bot_command entity Telegram
      * itself would attach — UpdateContext::command() relies on this entity, not on string parsing.
+     * $arguments (e.g. a deep-link payload) are appended after a space and stay outside the entity.
      */
-    public static function command(string $command, ?string $botUsername = null, int $chatId = 111, int $userId = 222): array
+    public static function command(string $command, ?string $botUsername = null, int $chatId = 111, int $userId = 222, ?string $arguments = null): array
     {
-        $text = '/'.ltrim($command, '/').($botUsername ? '@'.$botUsername : '');
+        $text = '/'.ltrim($command, '/').($botUsername ? '@'.$botUsername : '').($arguments !== null ? ' '.$arguments : '');
         $length = mb_strlen('/'.ltrim($command, '/').($botUsername ? '@'.$botUsername : ''));
 
         return [

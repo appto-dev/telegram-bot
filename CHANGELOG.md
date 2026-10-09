@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- A command sent with arguments (e.g. a deep link `/start ref123`) now routes to its handler:
+  `UpdateContext::command()` returned the name with a trailing space (`"start "`), so the command
+  never matched. It also no longer misses the `bot_command` entity when it isn't the message's
+  first entity. Arguments are still not parsed — the handler reads them from the message text.
+
 ## [0.5.1] - 2026-10-09
 
 ### Fixed

@@ -91,6 +91,34 @@ final class CommandRouterTest extends TestCase
         $this->assertSame(0, DeniedHandler::$handleCalls);
     }
 
+    /**
+     * "/start ref123" — a deep link: the payload after the space must not leak into the command name.
+     */
+    public function test_a_command_with_arguments_matches_by_its_name(): void
+    {
+        $router = new CommandRouter;
+        $router->add('start', RecordingHandler::class);
+
+        $matched = $router->dispatch(UpdateFactory::context(UpdateFactory::command('start', arguments: 'ref123')));
+
+        $this->assertTrue($matched);
+        $this->assertSame(1, RecordingHandler::$calls);
+    }
+
+    public function test_a_bot_command_entity_that_is_not_the_first_entity_is_recognized(): void
+    {
+        $payload = UpdateFactory::command('start');
+        $payload['message']['text'] = 'hi /start';
+        $payload['message']['entities'] = [
+            ['type' => 'bold', 'offset' => 0, 'length' => 2],
+            ['type' => 'bot_command', 'offset' => 3, 'length' => 6],
+        ];
+
+        $context = UpdateFactory::context($payload);
+
+        $this->assertSame('start', $context->command());
+    }
+
     public function test_all_returns_the_registered_routes(): void
     {
         $router = new CommandRouter;
