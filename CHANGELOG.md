@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `UpdateContext::command()` returned the name with a trailing space (`"start "`), so the command
   never matched. It also no longer misses the `bot_command` entity when it isn't the message's
   first entity. Arguments are still not parsed — the handler reads them from the message text.
+- `Upload` files nested inside other parameters (e.g. `InputMediaPhoto` in `sendMediaGroup()`) are
+  now sent. Previously they stayed inside the nested array and never reached the multipart body;
+  now every nested file is replaced with its `attach://` reference and sent at the top level.
 
 ## [0.5.1] - 2026-10-09
 

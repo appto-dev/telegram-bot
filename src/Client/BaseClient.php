@@ -38,24 +38,25 @@ class BaseClient
 
         $parameters = $this->normalizeParameters($parameters);
 
-        $withMultipart = false;
-        $parameters = $this->extractAttachments($parameters, $withMultipart);
+        $attachments = [];
+        $parameters = $this->extractAttachments($parameters, $attachments);
 
         if ($this->pendingOptions) {
             $this->http->withOptions($this->pendingOptions);
             $this->pendingOptions = null;
         }
 
-        if ($withMultipart) {
+        if ($attachments) {
             foreach ($parameters as $name => $value) {
-                if ($value instanceof InputFile) {
-                    $this->http->attach($name, $value->toResource(), $value->getFilename());
-                } else {
-                    $this->http->attach($name, is_array($value)
-                        ? json_encode($value, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR)
-                        : $value);
-                }
+                $this->http->attach($name, is_array($value)
+                    ? json_encode($value, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR)
+                    : $value);
             }
+
+            foreach ($attachments as $name => $file) {
+                $this->http->attach($name, $file->toResource(), $file->getFilename());
+            }
+
             $parameters = [];
         } else {
             $this->http->asJson();
@@ -101,21 +102,25 @@ class BaseClient
         return array_is_list($normalized) ? array_values($filtered) : $filtered;
     }
 
-    private function extractAttachments(array $parameters, &$withMultipart): array
+    /**
+     * Replaces every InputFile, at any nesting level (e.g. InputMedia inside sendMediaGroup), with its
+     * "attach://<name>" reference and collects the file itself for the top level of the multipart body.
+     *
+     * @param  array<string, InputFile>  $attachments
+     */
+    private function extractAttachments(array $parameters, array &$attachments): array
     {
         foreach ($parameters as $key => $value) {
-            if ($value instanceof InputFile || isset($value['attach'])) {
+            if ($value instanceof InputFile) {
                 /* @var Upload $value */
                 $parameters[$key] = $value->getAttachName();
-                $parameters[$value->getFilename()] = $value;
-
-                $withMultipart = true;
+                $attachments[$value->getFilename()] = $value;
 
                 continue;
             }
 
             if (is_array($value)) {
-                $parameters[$key] = $this->extractAttachments($value, $withMultipart);
+                $parameters[$key] = $this->extractAttachments($value, $attachments);
             }
         }
 
