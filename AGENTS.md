@@ -17,6 +17,9 @@ vendor/bin/phpunit tests/Routing/CommandRouterTest.php
 vendor/bin/pint <files>   # format changed files
 ```
 
+CI runs PHP 8.3–8.5 × `prefer-lowest`/`prefer-stable`. `phpunit.xml` sets `ignoreIndirectDeprecations`, so
+deprecations raised inside old vendor versions don't count — deprecations from `src/` still do.
+
 ## Layout (`src/`)
 
 - `TelegramBotServiceProvider.php` — bindings, routes, migrations, translations, artisan commands, publish tags.
