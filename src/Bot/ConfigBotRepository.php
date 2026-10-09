@@ -13,12 +13,14 @@ final readonly class ConfigBotRepository implements BotRepository
         $bots = [];
 
         foreach ($this->bots as $id => $bot) {
-            $bots[$id] = BotIdentity::from([
-                'id' => $id,
-                'token' => $bot['token'],
-                'webhook_secret' => $bot['webhook_secret'],
-                'handler' => $bot['handler'],
-            ]);
+            if ($bot['token']) {
+                $bots[$id] = BotIdentity::from([
+                    'id' => $id,
+                    'token' => $bot['token'],
+                    'webhook_secret' => $bot['webhook_secret'],
+                    'handler' => $bot['handler'],
+                ]);
+            }
         }
 
         return $bots;
