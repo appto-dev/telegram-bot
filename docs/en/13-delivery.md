@@ -64,6 +64,17 @@ and the bot's token, so it can't be forged without knowing `APP_KEY`. There's no
 store or sync between environments — if `APP_KEY` or the bot token changes, the secret is
 recomputed automatically; you just re-set the webhook.
 
+`telegram:set-webhook` builds the URL from `APP_URL` by default. If Telegram must reach the app on
+another domain — a tunnel during development, a separate public host — set the base address:
+
+```env
+TELEGRAM_WEBHOOK_URL=https://abc.ngrok.app
+```
+
+The route path is appended to it, so the bot `default` gets
+`https://abc.ngrok.app/api/telegram/webhook/default`. `APP_URL` and the rest of the app's URLs are
+unaffected. The route is named `api.telegram.webhook` if you need it in your own code.
+
 ## 13.4 Which one to pick
 
 Develop locally with `telegram:poll` (no tunnel/HTTPS needed), deploy to production with a webhook

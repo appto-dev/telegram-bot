@@ -41,6 +41,7 @@ Useful but optional:
 ```env
 TELEGRAM_BOT_REPOSITORY=config        # or database, see §15
 TELEGRAM_API_BASE_URI=https://api.telegram.org   # only change for a local Bot API Server
+TELEGRAM_WEBHOOK_URL=                 # another webhook domain than APP_URL, see §13.3
 TELEGRAM_BOT_UNAUTHORIZED_MESSAGE=    # see §11 "Permissions"
 ```
 

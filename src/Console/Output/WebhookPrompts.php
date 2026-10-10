@@ -43,9 +43,12 @@ final readonly class WebhookPrompts
     public function set(BotIdentity $identity): void
     {
         $existing = spin(fn () => $this->client->getWebhookInfo(), 'Checking webhook status...');
-        $url = route('telegram.webhook', $identity->webhookKey());
 
-        if (! empty($existing->url) && $existing->url !== $url) {
+        $base = rtrim(config('telegram-bot.webhook_url') ?: config('app.url'), '/');
+        $path = route('api.telegram.webhook', $identity->webhookKey(), absolute: false);
+        $webhookUrl = $base.$path;
+
+        if (! empty($existing->url) && $existing->url !== $webhookUrl) {
             $confirmed = confirm(
                 label: "A different webhook is already set ({$existing->url}). Overwrite it?",
                 default: false,
@@ -58,8 +61,8 @@ final readonly class WebhookPrompts
             }
         }
 
-        spin(fn () => $this->client->setWebhook($url, secret_token: $identity->webhook_secret), 'Setting webhook...');
-        info("Webhook set to {$url}.");
+        spin(fn () => $this->client->setWebhook($webhookUrl, secret_token: $identity->webhook_secret), 'Setting webhook...');
+        info("Webhook set to {$webhookUrl}.");
     }
 
     public function remove(): void

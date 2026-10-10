@@ -41,6 +41,7 @@ TELEGRAM_BOT_WEBHOOK_SECRET=любая-случайная-строка
 ```env
 TELEGRAM_BOT_REPOSITORY=config        # или database, см. §15
 TELEGRAM_API_BASE_URI=https://api.telegram.org   # менять только для локального Bot API Server
+TELEGRAM_WEBHOOK_URL=                 # другой домен для вебхука вместо APP_URL, см. §13.3
 TELEGRAM_BOT_UNAUTHORIZED_MESSAGE=    # см. §11 «Права доступа»
 ```
 

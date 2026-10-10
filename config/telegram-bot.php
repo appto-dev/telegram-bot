@@ -28,6 +28,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Webhook URL
+    |--------------------------------------------------------------------------
+    |
+    | Base address telegram:set-webhook registers with Telegram. The route
+    | path (/api/telegram/webhook/{key}) is appended to it. Set it when
+    | Telegram must reach the app on another domain than APP_URL, e.g. a
+    | tunnel during development: https://abc.ngrok.app
+    |
+    | Default: null — the app's APP_URL (config "app.url") is used.
+    |
+    */
+    'webhook_url' => env('TELEGRAM_WEBHOOK_URL'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Bots Source
     |--------------------------------------------------------------------------
     |

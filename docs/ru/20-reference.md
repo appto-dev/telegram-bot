@@ -6,6 +6,7 @@
 |---|---|
 | `bots` | Список ботов при `repository = config`: алиас → `token`, `webhook_secret`, `bot` (класс) |
 | `repository` | Источник списка ботов: `config` или `database` (env `TELEGRAM_BOT_REPOSITORY`) |
+| `webhook_url` | Базовый адрес для `telegram:set-webhook` вместо `APP_URL` (env `TELEGRAM_WEBHOOK_URL`), см. [13.3](13-delivery.md#133-webhook-для-продакшена) |
 | `base_uri` | Базовый адрес Bot API (менять только для локального Bot API Server) |
 | `http` | Опции HTTP-клиента (Guzzle `RequestOptions`) — таймауты и т. п. |
 | `unauthorized.message` | Сообщение по умолчанию при отказе в доступе (env `TELEGRAM_BOT_UNAUTHORIZED_MESSAGE`) |

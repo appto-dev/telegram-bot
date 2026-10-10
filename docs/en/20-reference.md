@@ -6,6 +6,7 @@
 |---|---|
 | `bots` | The bot list when `repository = config`: alias → `token`, `webhook_secret`, `bot` (class) |
 | `repository` | Where the bot list comes from: `config` or `database` (env `TELEGRAM_BOT_REPOSITORY`) |
+| `webhook_url` | Base address for `telegram:set-webhook` instead of `APP_URL` (env `TELEGRAM_WEBHOOK_URL`), see [13.3](13-delivery.md#133-webhook-for-production) |
 | `base_uri` | Base Bot API address (only change for a local Bot API Server) |
 | `http` | HTTP client options (Guzzle `RequestOptions`) — timeouts, etc. |
 | `unauthorized.message` | Default message on access denial (env `TELEGRAM_BOT_UNAUTHORIZED_MESSAGE`) |

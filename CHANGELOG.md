@@ -12,12 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `telegram-bot::auth.unauthorized` translation (en, ru) — a ready-made rejection text for
   `telegram-bot.unauthorized.message`. The default is still `null` (silent).
 - `telegram-bot::dialog.cancel_description` translation (en, ru).
+- `webhook_url` config key (env `TELEGRAM_WEBHOOK_URL`): the base address `telegram:set-webhook`
+  registers instead of `APP_URL`, e.g. a tunnel during development. Defaults to `APP_URL`.
 
 ### Changed
 
 - **Breaking:** the webhook route moved from `/telegram/webhook/{botId}` to
-  `/api/telegram/webhook/{botId}` and now runs through the `api` middleware group. Re-register
-  webhooks with Telegram (`setWebhook`) after upgrading.
+  `/api/telegram/webhook/{botId}` and now runs through the `api` middleware group. The route name
+  changed from `telegram.webhook` to `api.telegram.webhook`. Re-register webhooks with Telegram
+  (`setWebhook`) after upgrading.
 - `HelpCommand` and `CancelCommand` implement `HasDescription`, so `/help` and `/cancel` now appear in
   the `/help` list, described in the app's locale. `help.command_description` was shipped but unused.
 
