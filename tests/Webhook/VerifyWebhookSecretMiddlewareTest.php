@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Appto\TelegramBot\Tests\Webhook;
 
-use Appto\TelegramBot\Bot\BotManager;
 use Appto\TelegramBot\Tests\TestCase;
 use Appto\TelegramBot\Webhook\VerifyWebhookSecretMiddleware;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class VerifyWebhookSecretMiddlewareTest extends TestCase
 {
@@ -37,27 +35,24 @@ final class VerifyWebhookSecretMiddlewareTest extends TestCase
         $this->assertSame('guarded', $request->attributes->get('telegramBotIdentity')->id);
     }
 
-    public function test_it_rejects_a_missing_secret_header(): void
+    public function test_it_rejects_a_missing_secret_header_with_a_200_json_error(): void
     {
         $middleware = $this->app->make(VerifyWebhookSecretMiddleware::class);
         $request = $this->requestFor('guarded', secretHeader: null);
 
-        try {
-            $middleware->handle($request, fn () => new Response);
-            $this->fail('Expected an HttpException.');
-        } catch (HttpException $exception) {
-            $this->assertSame(401, $exception->getStatusCode());
-        }
+        $result = $middleware->handle($request, fn () => $this->fail('The request must not reach the controller.'));
+
+        $this->assertJsonError($result, 'Invalid webhook secret', Response::HTTP_UNAUTHORIZED);
     }
 
-    public function test_it_rejects_a_wrong_secret_header(): void
+    public function test_it_rejects_a_wrong_secret_header_with_a_200_json_error(): void
     {
         $middleware = $this->app->make(VerifyWebhookSecretMiddleware::class);
         $request = $this->requestFor('guarded', secretHeader: 'wrong');
 
-        $this->expectException(HttpException::class);
+        $result = $middleware->handle($request, fn () => $this->fail('The request must not reach the controller.'));
 
-        $middleware->handle($request, fn () => new Response);
+        $this->assertJsonError($result, 'Invalid webhook secret', Response::HTTP_UNAUTHORIZED);
     }
 
     public function test_it_passes_through_when_the_bot_has_no_webhook_secret_configured(): void
@@ -71,14 +66,28 @@ final class VerifyWebhookSecretMiddlewareTest extends TestCase
         $this->assertSame($response, $result);
     }
 
-    public function test_it_returns_not_found_for_an_unknown_bot_id(): void
+    public function test_it_returns_a_200_json_error_for_an_unknown_bot_id(): void
     {
-        $middleware = $this->app->make(BotManager::class);
+        $middleware = $this->app->make(VerifyWebhookSecretMiddleware::class);
         $request = $this->requestFor('missing', secretHeader: null);
 
-        $this->expectException(NotFoundHttpException::class);
+        $result = $middleware->handle($request, fn () => $this->fail('The request must not reach the controller.'));
 
-        (new VerifyWebhookSecretMiddleware($middleware))->handle($request, fn () => new Response);
+        $this->assertInstanceOf(JsonResponse::class, $result);
+        $this->assertSame(Response::HTTP_OK, $result->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $result->getData(true)['status_code']);
+        $this->assertNotEmpty($result->getData(true)['error']);
+        $this->assertNull($request->attributes->get('telegramBotIdentity'));
+    }
+
+    /**
+     * Telegram retries any non-2xx webhook response, so verification errors are reported in the body with HTTP 200.
+     */
+    private function assertJsonError(Response $response, string $error, int $statusCode): void
+    {
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame(['error' => $error, 'status_code' => $statusCode], $response->getData(true));
     }
 
     private function requestFor(string $botId, ?string $secretHeader): Request

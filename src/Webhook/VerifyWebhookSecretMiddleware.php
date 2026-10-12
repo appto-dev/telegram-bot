@@ -17,7 +17,7 @@ final readonly class VerifyWebhookSecretMiddleware
         try {
             $identity = $this->manager->findByWebhookKey($request->route('botId'));
         } catch (\Exception $e) {
-            abort(Response::HTTP_NOT_FOUND, $e->getMessage());
+            return response()->json(['error' => $e->getMessage(), 'status_code' => Response::HTTP_NOT_FOUND]);
         }
 
         $request->attributes->set('telegramBotIdentity', $identity);
@@ -26,11 +26,9 @@ final readonly class VerifyWebhookSecretMiddleware
             return $next($request);
         }
 
-        abort_if(
-            $request->header('X-Telegram-Bot-Api-Secret-Token') !== $identity->webhook_secret,
-            code: Response::HTTP_UNAUTHORIZED,
-            message: 'Invalid webhook secret'
-        );
+        if ($request->header('X-Telegram-Bot-Api-Secret-Token') !== $identity->webhook_secret) {
+            return response()->json(['error' => 'Invalid webhook secret', 'status_code' => Response::HTTP_UNAUTHORIZED]);
+        }
 
         return $next($request);
     }

@@ -15,8 +15,10 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Translation\TranslationServiceProvider;
+use Illuminate\View\ViewServiceProvider;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Spatie\LaravelData\LaravelDataServiceProvider;
 
@@ -118,6 +120,10 @@ abstract class TestCase extends BaseTestCase
                 'default' => 'local',
                 'disks' => [],
             ],
+            'view' => [
+                'paths' => [],
+                'compiled' => $basePath,
+            ],
             'telegram-bot' => $this->telegramBotConfig(),
         ]));
 
@@ -126,6 +132,10 @@ abstract class TestCase extends BaseTestCase
         $app->register(CacheServiceProvider::class);
         $app->register(FilesystemServiceProvider::class);
         $app->register(TranslationServiceProvider::class);
+        // response()->json() / noContent() resolve ResponseFactory, which needs the view factory and
+        // a redirector (UrlGenerator → current request, normally bound by the HTTP kernel).
+        $app->register(ViewServiceProvider::class);
+        $app->instance('request', Request::create('http://localhost'));
         $app->register(LaravelDataServiceProvider::class);
         $app->register(TelegramBotServiceProvider::class);
 
