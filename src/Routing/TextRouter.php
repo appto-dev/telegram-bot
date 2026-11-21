@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Appto\TelegramBot\Routing;
 
 use Appto\TelegramBot\Support\HandlerInvoker;
+use Appto\TelegramBot\Support\RouteThrottle;
 use Appto\TelegramBot\Update\UpdateContext;
 
 final class TextRouter implements RouterContract
 {
+    /** @var array<string, RouteDefinition> */
     private array $routes = [];
 
     public static function key(): string
@@ -16,9 +18,11 @@ final class TextRouter implements RouterContract
         return 'text';
     }
 
-    public function add(string $pattern, string|callable $handler): void
+    public function add(string $pattern, string|callable $handler): RouteDefinition
     {
-        $this->routes[$this->normalize($pattern)] = $handler;
+        $pattern = $this->normalize($pattern);
+
+        return $this->routes[$pattern] = new RouteDefinition($pattern, $handler);
     }
 
     public function dispatch(UpdateContext $context): bool
@@ -30,10 +34,14 @@ final class TextRouter implements RouterContract
             return false;
         }
 
-        $handler = $this->routes[$this->normalize($text)] ?? null;
+        $route = $this->routes[$this->normalize($text)] ?? null;
 
-        if ($handler) {
-            HandlerInvoker::call($handler, ['context' => $context]);
+        if ($route) {
+            if ($throttle = $route->throttleConfig()) {
+                RouteThrottle::hit($context, self::key(), $route->pattern(), $throttle['scope'], $throttle['max'], $throttle['decay']);
+            }
+
+            HandlerInvoker::call($route->handler(), ['context' => $context]);
 
             return true;
         }
@@ -46,6 +54,7 @@ final class TextRouter implements RouterContract
         return mb_strtolower(trim($text));
     }
 
+    /** @return array<string, RouteDefinition> */
     public function all(): array
     {
         return $this->routes;

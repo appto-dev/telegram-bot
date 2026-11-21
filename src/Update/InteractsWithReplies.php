@@ -41,9 +41,9 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendMessage(
-            chat_id: $chat_id,
             text: $text,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -81,9 +81,9 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendPhoto(
-            chat_id: $chat_id,
             photo: $photo,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -124,10 +124,10 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendLivePhoto(
-            chat_id: $chat_id,
             live_photo: $live_photo,
             photo: $photo,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -169,9 +169,9 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendAudio(
-            chat_id: $chat_id,
             audio: $audio,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -213,9 +213,9 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendDocument(
-            chat_id: $chat_id,
             document: $document,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -262,9 +262,9 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendVideo(
-            chat_id: $chat_id,
             video: $video,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -315,9 +315,9 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendAnimation(
-            chat_id: $chat_id,
             animation: $animation,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -360,9 +360,9 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendVoice(
-            chat_id: $chat_id,
             voice: $voice,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -399,9 +399,9 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendVideoNote(
-            chat_id: $chat_id,
             video_note: $video_note,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -505,10 +505,10 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendLocation(
-            chat_id: $chat_id,
             latitude: $latitude,
             longitude: $longitude,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -549,12 +549,12 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendVenue(
-            chat_id: $chat_id,
             latitude: $latitude,
             longitude: $longitude,
             title: $title,
             address: $address,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,
@@ -591,10 +591,10 @@ trait InteractsWithReplies
         [$chat_id, $business_connection_id] = $this->getReplyData();
 
         return $this->client()->sendContact(
-            chat_id: $chat_id,
             phone_number: $phone_number,
             first_name: $first_name,
             business_connection_id: $business_connection_id,
+            chat_id: $chat_id,
             message_thread_id: $message_thread_id,
             direct_messages_topic_id: $direct_messages_topic_id,
             ephemeral_message_parameters: $ephemeral_message_parameters,

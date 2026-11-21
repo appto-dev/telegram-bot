@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Appto\TelegramBot\Tests\Routing;
 
+use Appto\TelegramBot\Routing\RouteDefinition;
 use Appto\TelegramBot\Routing\TextRouter;
 use Appto\TelegramBot\Tests\Fixtures\DeniedHandler;
 use Appto\TelegramBot\Tests\Fixtures\RecordingHandler;
@@ -135,8 +136,11 @@ final class TextRouterTest extends TestCase
         $router->add('hello', RecordingHandler::class);
         $router->add('bye', RecordingHandler::class);
 
-        $this->assertSame(
-            ['hello' => RecordingHandler::class, 'bye' => RecordingHandler::class],
+        $this->assertEquals(
+            [
+                'hello' => new RouteDefinition('hello', RecordingHandler::class),
+                'bye' => new RouteDefinition('bye', RecordingHandler::class),
+            ],
             $router->all(),
         );
     }

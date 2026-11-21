@@ -11,6 +11,7 @@ use Appto\TelegramBot\Exceptions\RouterException;
 use Appto\TelegramBot\Exceptions\ThrottleExceededException;
 use Appto\TelegramBot\Routing\CallbackRouter;
 use Appto\TelegramBot\Routing\CommandRouter;
+use Appto\TelegramBot\Routing\RouteDefinition;
 use Appto\TelegramBot\Routing\RouterRegistry;
 use Appto\TelegramBot\Routing\TextRouter;
 use Appto\TelegramBot\Update\UpdateContext;
@@ -45,40 +46,46 @@ abstract class Bot
     /**
      * @param  callable|class-string<UpdateHandler>  $handler
      */
-    protected function onText(string $text, callable|string $handler): void
+    protected function onText(string $text, callable|string $handler): RouteDefinition
     {
-        $this->router()->get(TextRouter::key())->add($text, $handler);
+        return $this->router()->get(TextRouter::key())->add($text, $handler);
     }
 
     /**
      * @param  callable|class-string<CallbackHandler|UpdateHandler>  $handler
      */
-    protected function onCallback(string $pattern, callable|string $handler): void
+    protected function onCallback(string $pattern, callable|string $handler): RouteDefinition
     {
-        $this->router()->get(CallbackRouter::key())->add($pattern, $handler);
+        return $this->router()->get(CallbackRouter::key())->add($pattern, $handler);
     }
 
     /**
      * @param  callable|class-string<UpdateHandler>  $handler
      */
-    protected function onCommand(string $name, callable|string $handler): void
+    protected function onCommand(string $name, callable|string $handler): RouteDefinition
     {
-        $this->router()->get(CommandRouter::key())->add($name, $handler);
+        return $this->router()->get(CommandRouter::key())->add($name, $handler);
     }
 
-    protected function onUpdate(UpdateType|array $type, callable|string|null $handler = null): void
+    /**
+     * @param  array<UpdateType, callable|string|null>|UpdateType  $type
+     * @return ($type is array ? array<string, RouteDefinition> : RouteDefinition)
+     */
+    protected function onUpdate(UpdateType|array $type, callable|string|null $handler = null): RouteDefinition|array
     {
         if (is_array($type)) {
-            foreach ($type as $updateType => $handler) {
+            $routes = [];
+
+            foreach ($type as $updateType => $routeHandler) {
                 if ($updateType instanceof UpdateType) {
-                    $this->onUpdate($updateType, $handler);
+                    $routes[$updateType->value] = $this->onUpdate($updateType, $routeHandler);
                 }
             }
 
-            return;
+            return $routes;
         }
 
-        $this->router()->get(UpdateRouter::key())->add($type->value, $handler);
+        return $this->router()->get(UpdateRouter::key())->add($type->value, $handler);
     }
 
     /**

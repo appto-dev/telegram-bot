@@ -23,14 +23,13 @@ final readonly class HelpCommand implements CommandHandler, HasDescription
     {
         $bot = $this->bots->resolve($context->bot);
 
-        /** @var class-string<HasDescription> $class */
         $lines = collect($bot->router()->get(CommandRouter::key())->all())
-            ->filter(fn (string|callable $class) => is_string($class) && is_subclass_of($class, HasDescription::class))
-            ->filter(fn (string $class) => $this->authorized($class, $context))
-            ->map(fn (string $class, string $name) => sprintf(
+            ->filter(fn (RouteDefinition $route) => is_string($route->handler()) && is_subclass_of($route->handler(), HasDescription::class))
+            ->filter(fn (RouteDefinition $route) => $this->authorized($route->handler(), $context))
+            ->map(fn (RouteDefinition $route, string $name) => sprintf(
                 '/%s — %s',
                 $name,
-                htmlspecialchars($class::description(), ENT_QUOTES),
+                htmlspecialchars($route->handler()::description(), ENT_QUOTES),
             ))
             ->sort()
             ->values();
@@ -47,6 +46,9 @@ final readonly class HelpCommand implements CommandHandler, HasDescription
         );
     }
 
+    /**
+     * @param  class-string  $class
+     */
     private function authorized(string $class, UpdateContext $context): bool
     {
         if (! is_subclass_of($class, RequiresPermission::class)) {

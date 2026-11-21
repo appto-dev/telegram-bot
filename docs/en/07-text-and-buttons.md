@@ -49,6 +49,18 @@ $this->onText(GlobalReplyMarkup::CABINET_LABEL_TRIGGER, CabinetCommand::class);
 This way the button label exists in exactly one place in the project — a constant — used both to
 build the keyboard and to register the trigger.
 
+## 7.4 Per-trigger throttling
+
+To rate-limit a specific text trigger, chain `->throttle()` (per user) or `->throttlePerChat()` on
+its registration:
+
+```php
+$this->onText(GlobalReplyMarkup::CABINET_LABEL_TRIGGER, CabinetCommand::class)->throttle(1, 60);
+```
+
+The limit applies only when this trigger matches and is independent from other routes. See
+[12. Middleware](12-middleware.md) (§12.5) for details.
+
 ## Next
 
 → [8. Keyboards](08-keyboards.md)

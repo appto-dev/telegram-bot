@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Appto\TelegramBot\Tests\Routing;
 
 use Appto\TelegramBot\Routing\CommandRouter;
+use Appto\TelegramBot\Routing\RouteDefinition;
 use Appto\TelegramBot\Tests\Fixtures\DeniedHandler;
 use Appto\TelegramBot\Tests\Fixtures\RecordingHandler;
 use Appto\TelegramBot\Tests\Support\UpdateFactory;
@@ -125,8 +126,11 @@ final class CommandRouterTest extends TestCase
         $router->add('start', RecordingHandler::class);
         $router->add('help', RecordingHandler::class);
 
-        $this->assertSame(
-            ['start' => RecordingHandler::class, 'help' => RecordingHandler::class],
+        $this->assertEquals(
+            [
+                'start' => new RouteDefinition('start', RecordingHandler::class),
+                'help' => new RouteDefinition('help', RecordingHandler::class),
+            ],
             $router->all(),
         );
     }

@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Bot API 10.4 client methods: `sendWidget()`, `sendSharedWidget()`, `answerWidgetQuery()`,
+  `getChatShareThemeBackdrops()`, `getUniqueGift()`, `deleteBusinessAccountGift()`,
+  `editMessageWidgetData()`, `editSharedWidgetData()`.
+- Per-route rate limiting for registered handlers: `onCommand()`, `onText()`, `onCallback()`, and
+  `onUpdate()` now return a `RouteDefinition` that can be throttled with
+  `->throttle($maxAttempts, $decaySeconds)` (per user) or
+  `->throttlePerChat($maxAttempts, $decaySeconds)`. Limits apply only when the route matches and use
+  a separate bucket per route.
+
+### Changed
+
+- Bot API method signatures now follow the 10.4 schema: `chat_id` is optional in message-sending
+  methods and the named-argument order matches the API spec.
+- **Breaking:** `RouterContract::add()` now returns a `RouteDefinition` and `RouterContract::all()`
+  now returns `array<string, RouteDefinition>` instead of raw handlers. `Bot::onCommand()`,
+  `onText()`, `onCallback()`, and `onUpdate()` return the registered route definition(s);
+  `onUpdate([...])` returns an array of definitions keyed by update type.
+
 ## [0.6.0] - 2026-10-10
 
 ### Added

@@ -27,20 +27,22 @@ deprecations raised inside old vendor versions don't count — deprecations from
   `BotManager`, `BotIdentity`, `BotRepository` with `ConfigBotRepository` / `DatabaseBotRepository` (`telegram_bots`, encrypted token).
 - `Update/` — `UpdateContext` (update + bot, `reply*()` via `InteractsWithReplies`, `command()`, `chatId()`, `userId()`),
   `UpdateType` enum, `UpdateRouter`, middleware contract, throttle middlewares, `CacheDeduplicator`.
-- `Routing/` — `RouterRegistry`, `TextRouter`, `CallbackRouter` (`{id}` / `{id?}` patterns), `CommandRouter`, `HelpCommand`.
+- `Routing/` — `RouterRegistry`, `TextRouter`, `CallbackRouter` (`{id}` / `{id?}` patterns), `CommandRouter`, `HelpCommand`,
+  `RouteDefinition` (handler + optional throttle config returned on registration).
 - `Dialog/` — `Dialog`, `Step`, `StepResult`/`StepAction`, `DialogManager`, state in `telegram_dialog_states`.
 - `Client/` — `BaseClient::call()` (JSON or multipart, `attach://` uploads), `TelegramClient` (Bot API traits), `Upload`.
 - `Webhook/` — `WebhookController` + `VerifyWebhookSecretMiddleware`, route in `routes/webhook.php`.
 - `Console/` — `telegram:poll`, `telegram:set-webhook`, `telegram:delete-webhook`, `telegram:webhook-secret`,
   `telegram:routes`, `telegram:migrate-bots-db`; console output helpers in `Console/Output`.
 - `Events/`, `Exceptions/`, `Contracts/` (`CommandHandler`, `CallbackHandler`, `RequiresPermission`, `HasDescription`,
-  `HasUnauthorizedMessage`), `Support/` (`HandlerInvoker`, `UnauthorizedResponder`, `SecretGenerator`).
+  `HasUnauthorizedMessage`), `Support/` (`HandlerInvoker`, `UnauthorizedResponder`, `SecretGenerator`, `RouteThrottle`).
 
 ## Update flow
 
 `Bot::dispatch()`: `UpdateReceived` event → bot middleware (Pipeline) → active dialog (`DialogManager::handle()`,
 any command cancels it) → routers in order text → callback → command → update → `fallback()`.
-Handlers run through `HandlerInvoker` (container-resolved, `RequiresPermission` checked first).
+Routers check a matching route's throttle (`RouteThrottle`) before invoking its handler;
+handlers run through `HandlerInvoker` (container-resolved, `RequiresPermission` checked first).
 
 ## Conventions
 

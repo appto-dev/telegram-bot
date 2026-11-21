@@ -81,6 +81,18 @@ final class AdminPanel implements CommandHandler, RequiresPermission
 Фреймворк сам вызовет `authorize()` перед `handle()`. При `false` пользователь получит отказ (см.
 [11. Права доступа](11-permissions.md)) — вам не нужно проверять права внутри `handle()`.
 
+## 5.5 Лимит на команду
+
+Чтобы ограничить частоту вызова конкретной команды, добавьте `->throttle()` (на пользователя) или
+`->throttlePerChat()` (на чат) к её регистрации:
+
+```php
+$this->onCommand('start', StartCommand::class)->throttle(1, 60);
+```
+
+Лимит применяется только при совпадении этой команды и не зависит от других маршрутов. Подробнее —
+в [12. Middleware](12-middleware.md) (§12.5).
+
 ## Дальше
 
 → [6. Кнопки и callback-запросы](06-callbacks.md)

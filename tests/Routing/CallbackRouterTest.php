@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Appto\TelegramBot\Tests\Routing;
 
 use Appto\TelegramBot\Routing\CallbackRouter;
+use Appto\TelegramBot\Routing\RouteDefinition;
 use Appto\TelegramBot\Tests\Fixtures\RecordingCallbackHandler;
 use Appto\TelegramBot\Tests\Support\UpdateFactory;
 use Appto\TelegramBot\Tests\TestCase;
@@ -121,8 +122,11 @@ final class CallbackRouterTest extends TestCase
         $router->add('cancel', RecordingCallbackHandler::class);
         $router->add('order:{id}', RecordingCallbackHandler::class);
 
-        $this->assertSame(
-            ['cancel' => RecordingCallbackHandler::class, 'order:{id}' => RecordingCallbackHandler::class],
+        $this->assertEquals(
+            [
+                'cancel' => new RouteDefinition('cancel', RecordingCallbackHandler::class),
+                'order:{id}' => new RouteDefinition('order:{id}', RecordingCallbackHandler::class),
+            ],
             $router->all(),
         );
     }

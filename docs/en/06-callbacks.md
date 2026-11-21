@@ -47,6 +47,18 @@ $context->answerCallbackQuery(text: 'Order confirmed', show_alert: true);
 
 Inline keyboard layout with `callback_data` is covered in [8. Keyboards](08-keyboards.md).
 
+## 6.5 Per-callback throttling
+
+To rate-limit a specific callback pattern, chain `->throttle()` (per user) or `->throttlePerChat()`
+on its registration:
+
+```php
+$this->onCallback('order:confirm {id}', OrderConfirmHandler::class)->throttle(1, 60);
+```
+
+The limit applies only when this pattern matches and is independent from other routes. See
+[12. Middleware](12-middleware.md) (§12.5) for details.
+
 ## Next
 
 → [7. Plain text and triggers](07-text-and-buttons.md)

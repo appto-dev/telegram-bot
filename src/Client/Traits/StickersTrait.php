@@ -22,9 +22,9 @@ use Appto\TelegramBot\Type\SuggestedPostParameters;
 trait StickersTrait
 {
     public function sendSticker(
-        int|string $chat_id,
         InputFile|string $sticker,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -39,9 +39,9 @@ trait StickersTrait
     ): Message {
         return Message::from(
             $this->call('sendSticker', [
-                'chat_id' => $chat_id,
                 'sticker' => $sticker,
                 'business_connection_id' => $business_connection_id,
+                'chat_id' => $chat_id,
                 'message_thread_id' => $message_thread_id,
                 'direct_messages_topic_id' => $direct_messages_topic_id,
                 'ephemeral_message_parameters' => $ephemeral_message_parameters,

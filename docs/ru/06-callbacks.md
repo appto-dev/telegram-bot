@@ -46,6 +46,18 @@ $context->answerCallbackQuery(text: 'Заказ подтверждён', show_al
 
 Разметка инлайн-клавиатуры с `callback_data` разбирается в [8. Клавиатуры](08-keyboards.md).
 
+## 6.5 Лимит на callback
+
+Чтобы ограничить частоту нажатий по конкретному callback-паттерну, добавьте `->throttle()` (на
+пользователя) или `->throttlePerChat()` (на чат) к его регистрации:
+
+```php
+$this->onCallback('order:confirm {id}', OrderConfirmHandler::class)->throttle(1, 60);
+```
+
+Лимит применяется только при совпадении этого паттерна и не зависит от других маршрутов. Подробнее —
+в [12. Middleware](12-middleware.md) (§12.5).
+
 ## Дальше
 
 → [7. Обычный текст и триггеры](07-text-and-buttons.md)

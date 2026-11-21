@@ -67,6 +67,10 @@ final class UpdateContext implements CanReply
     public function chatId(): int|string|null
     {
         $type = UpdateType::detect($this->update);
+        if ($type === null) {
+            return null;
+        }
+
         $update = $this->update()->{$type->value};
 
         // `?? null` before the nullsafe chain: some update payloads (Poll, ChatBoost, ...) don't
@@ -77,6 +81,10 @@ final class UpdateContext implements CanReply
     public function userId(): int|string|null
     {
         $type = UpdateType::detect($this->update);
+        if ($type === null) {
+            return null;
+        }
+
         $update = $this->update()->{$type->value};
 
         return ($update->from ?? null)?->id;
