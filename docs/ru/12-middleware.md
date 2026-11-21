@@ -102,6 +102,27 @@ use Illuminate\Foundation\Configuration\Exceptions;
 `->userId()`, `->reply()` и другие методы, так что видно, какой бот/чат/юзер превысил лимит, и можно
 сразу на него ответить.
 
+## 12.5 Лимит на конкретный маршрут
+
+Глобальный middleware ограничивает каждый апдейт бота. Чтобы ограничить только конкретную команду,
+callback, текстовый триггер или обработчик типа апдейта, добавьте `->throttle()` (на пользователя)
+или `->throttlePerChat()` (на чат) к регистрации маршрута — `onCommand()`, `onText()`,
+`onCallback()` и `onUpdate()` возвращают объект маршрута:
+
+```php
+protected function boot(): void
+{
+    $this->onCommand('start', StartCommand::class)->throttle(1, 60);
+    $this->onCallback('order:confirm {id}', OrderConfirmHandler::class)->throttlePerChat(5, 60);
+}
+```
+
+Лимит проверяется только при совпадении маршрута и использует отдельный бакет для каждого маршрута,
+поэтому квоты разных маршрутов независимы. При превышении бросается то же
+`UserThrottleExceededException`/`ChatThrottleExceededException`, что и у глобальных middleware, и
+обрабатывается так же через `Bot::dispatch()`/`report()` (см. §12.4). Per-route лимиты можно
+сочетать с глобальным throttle middleware.
+
 ## Дальше
 
 → [13. Webhook и long polling](13-delivery.md)

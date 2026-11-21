@@ -62,12 +62,16 @@ class RoutesListCommand extends Command
 
             try {
                 $routes = $bot->router()->get($routerKey)->all();
-                foreach ($routes as $route => $handler) {
+
+                foreach ($routes as $route => $definition) {
+                    $handler = $definition->handler();
+
                     $rows[] = [
                         $label,
                         $routerKey == CommandRouter::key() ? '/'.$route : $route,
                         $this->describeHandler($handler),
                         $this->isProtected($handler) ? 'yes' : '',
+                        $this->describeThrottle($definition->throttleConfig()),
                     ];
                 }
             } catch (\Exception $e) {
@@ -87,7 +91,7 @@ class RoutesListCommand extends Command
             return;
         }
 
-        $this->table(['Type', 'Route', 'Handler', 'Protected'], $rows);
+        $this->table(['Type', 'Route', 'Handler', 'Protected', 'Throttle'], $rows);
     }
 
     private function describeHandler(mixed $handler): string
@@ -98,5 +102,31 @@ class RoutesListCommand extends Command
     private function isProtected(mixed $handler): bool
     {
         return is_string($handler) && is_subclass_of($handler, RequiresPermission::class);
+    }
+
+    /**
+     * @param  array{scope: 'user'|'chat', max: int, decay: int}|null  $throttle
+     */
+    private function describeThrottle(?array $throttle): string
+    {
+        if ($throttle === null) {
+            return '';
+        }
+
+        return sprintf(
+            '%s: %d/%s',
+            $throttle['scope'],
+            $throttle['max'],
+            $this->formatDecay($throttle['decay']),
+        );
+    }
+
+    private function formatDecay(int $seconds): string
+    {
+        return match (true) {
+            $seconds >= 3600 && $seconds % 3600 === 0 => intdiv($seconds, 3600).'h',
+            $seconds >= 60 && $seconds % 60 === 0 => intdiv($seconds, 60).'m',
+            default => $seconds.'s',
+        };
     }
 }

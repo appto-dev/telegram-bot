@@ -81,6 +81,18 @@ final class AdminPanel implements CommandHandler, RequiresPermission
 The framework calls `authorize()` before `handle()` on its own. On `false` the user gets rejected
 (see [11. Permissions](11-permissions.md)) — you don't need to check permissions inside `handle()`.
 
+## 5.5 Per-command throttling
+
+To rate-limit a specific command, chain `->throttle()` (per user) or `->throttlePerChat()` on its
+registration:
+
+```php
+$this->onCommand('start', StartCommand::class)->throttle(1, 60);
+```
+
+The limit applies only when this command matches and is independent from other routes. See
+[12. Middleware](12-middleware.md) (§12.5) for details.
+
 ## Next
 
 → [6. Buttons and callback queries](06-callbacks.md)

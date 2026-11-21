@@ -101,6 +101,27 @@ use Illuminate\Foundation\Configuration\Exceptions;
 `->userId()`, `->reply()` and the rest are all available, so you can see exactly which bot/chat/user
 tripped the limit and reply right there.
 
+## 12.5 Per-route throttling
+
+Global middleware limits every update the bot receives. To limit a specific command, callback, text
+trigger, or update handler, chain `->throttle()` (per user) or `->throttlePerChat()` on the route
+registration — `onCommand()`, `onText()`, `onCallback()`, and `onUpdate()` return a route
+definition:
+
+```php
+protected function boot(): void
+{
+    $this->onCommand('start', StartCommand::class)->throttle(1, 60);
+    $this->onCallback('order:confirm {id}', OrderConfirmHandler::class)->throttlePerChat(5, 60);
+}
+```
+
+The limit is checked only when that route matches and uses a separate bucket per route, so one
+route's quota is independent from another. On exceed it throws the same
+`UserThrottleExceededException`/`ChatThrottleExceededException` as the global middlewares and is
+handled the same way by `Bot::dispatch()`/`report()` (see §12.4). Per-route limits can be combined
+with global throttle middleware.
+
 ## Next
 
 → [13. Webhook and long polling](13-delivery.md)

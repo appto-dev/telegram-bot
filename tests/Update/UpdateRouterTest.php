@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Appto\TelegramBot\Tests\Update;
 
+use Appto\TelegramBot\Routing\RouteDefinition;
 use Appto\TelegramBot\Tests\Fixtures\RecordingHandler;
 use Appto\TelegramBot\Tests\Support\UpdateFactory;
 use Appto\TelegramBot\Tests\TestCase;
@@ -58,6 +59,6 @@ final class UpdateRouterTest extends TestCase
         $router = new UpdateRouter;
         $router->add('poll', RecordingHandler::class);
 
-        $this->assertSame(['poll' => RecordingHandler::class], $router->all());
+        $this->assertEquals(['poll' => new RouteDefinition('poll', RecordingHandler::class)], $router->all());
     }
 }
