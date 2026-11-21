@@ -23,6 +23,7 @@ use Appto\TelegramBot\Type\ChatMemberMember;
 use Appto\TelegramBot\Type\ChatMemberOwner;
 use Appto\TelegramBot\Type\ChatMemberRestricted;
 use Appto\TelegramBot\Type\ChatPermissions;
+use Appto\TelegramBot\Type\ChatShareThemeBackdrops;
 use Appto\TelegramBot\Type\EphemeralMessageParameters;
 use Appto\TelegramBot\Type\File;
 use Appto\TelegramBot\Type\ForceReply;
@@ -55,6 +56,7 @@ use Appto\TelegramBot\Type\StarAmount;
 use Appto\TelegramBot\Type\Sticker;
 use Appto\TelegramBot\Type\Story;
 use Appto\TelegramBot\Type\SuggestedPostParameters;
+use Appto\TelegramBot\Type\UniqueGift;
 use Appto\TelegramBot\Type\User;
 use Appto\TelegramBot\Type\UserChatBoosts;
 use Appto\TelegramBot\Type\UserProfileAudios;
@@ -79,9 +81,9 @@ trait AvailableMethodsTrait
     }
 
     public function sendMessage(
-        int|string $chat_id,
         string $text,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -97,9 +99,9 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendMessage', [
-            'chat_id' => $chat_id,
             'text' => $text,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -229,9 +231,9 @@ trait AvailableMethodsTrait
     }
 
     public function sendPhoto(
-        int|string $chat_id,
         InputFile|string $photo,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -249,9 +251,9 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendPhoto', [
-            'chat_id' => $chat_id,
             'photo' => $photo,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -271,10 +273,10 @@ trait AvailableMethodsTrait
     }
 
     public function sendLivePhoto(
-        int|string $chat_id,
         InputFile|string $live_photo,
         InputFile|string $photo,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -292,10 +294,10 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendLivePhoto', [
-            'chat_id' => $chat_id,
             'live_photo' => $live_photo,
             'photo' => $photo,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -315,9 +317,9 @@ trait AvailableMethodsTrait
     }
 
     public function sendAudio(
-        int|string $chat_id,
         InputFile|string $audio,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -337,9 +339,9 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendAudio', [
-            'chat_id' => $chat_id,
             'audio' => $audio,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -361,9 +363,9 @@ trait AvailableMethodsTrait
     }
 
     public function sendDocument(
-        int|string $chat_id,
         InputFile|string $document,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -381,9 +383,9 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendDocument', [
-            'chat_id' => $chat_id,
             'document' => $document,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -403,9 +405,9 @@ trait AvailableMethodsTrait
     }
 
     public function sendVideo(
-        int|string $chat_id,
         InputFile|string $video,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -430,9 +432,9 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendVideo', [
-            'chat_id' => $chat_id,
             'video' => $video,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -459,9 +461,9 @@ trait AvailableMethodsTrait
     }
 
     public function sendAnimation(
-        int|string $chat_id,
         InputFile|string $animation,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -483,9 +485,9 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendAnimation', [
-            'chat_id' => $chat_id,
             'animation' => $animation,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -509,9 +511,9 @@ trait AvailableMethodsTrait
     }
 
     public function sendVoice(
-        int|string $chat_id,
         InputFile|string $voice,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -528,9 +530,9 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendVoice', [
-            'chat_id' => $chat_id,
             'voice' => $voice,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -549,9 +551,9 @@ trait AvailableMethodsTrait
     }
 
     public function sendVideoNote(
-        int|string $chat_id,
         InputFile|string $video_note,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -567,9 +569,9 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendVideoNote', [
-            'chat_id' => $chat_id,
             'video_note' => $video_note,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -581,6 +583,84 @@ trait AvailableMethodsTrait
             'allow_paid_broadcast' => $allow_paid_broadcast,
             'message_effect_id' => $message_effect_id,
             'suggested_post_parameters' => $suggested_post_parameters,
+            'reply_parameters' => $reply_parameters,
+            'reply_markup' => $reply_markup,
+        ]));
+    }
+
+    public function sendWidget(
+        int|string $chat_id,
+        string $html,
+        ?int $message_thread_id = null,
+        ?int $width = null,
+        ?int $height = null,
+        ?string $public_data = null,
+        ?string $chat_data = null,
+        ?string $caption = null,
+        ?string $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $show_caption_above_media = null,
+        ?bool $allow_queries = null,
+        ?bool $is_shared = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $allow_paid_broadcast = null,
+        ?string $message_effect_id = null,
+        ?ReplyParameters $reply_parameters = null,
+        ReplyKeyboardRemove|ForceReply|InlineKeyboardMarkup|ReplyKeyboardMarkup|null $reply_markup = null
+    ): Message {
+        return Message::from($this->call('sendWidget', [
+            'chat_id' => $chat_id,
+            'html' => $html,
+            'message_thread_id' => $message_thread_id,
+            'width' => $width,
+            'height' => $height,
+            'public_data' => $public_data,
+            'chat_data' => $chat_data,
+            'caption' => $caption,
+            'parse_mode' => $parse_mode,
+            'caption_entities' => $caption_entities,
+            'show_caption_above_media' => $show_caption_above_media,
+            'allow_queries' => $allow_queries,
+            'is_shared' => $is_shared,
+            'disable_notification' => $disable_notification,
+            'protect_content' => $protect_content,
+            'allow_paid_broadcast' => $allow_paid_broadcast,
+            'message_effect_id' => $message_effect_id,
+            'reply_parameters' => $reply_parameters,
+            'reply_markup' => $reply_markup,
+        ]));
+    }
+
+    public function sendSharedWidget(
+        int|string $chat_id,
+        string $widget_id,
+        ?int $message_thread_id = null,
+        ?string $chat_data = null,
+        ?string $caption = null,
+        ?string $parse_mode = null,
+        ?array $caption_entities = null,
+        ?bool $show_caption_above_media = null,
+        ?bool $disable_notification = null,
+        ?bool $protect_content = null,
+        ?bool $allow_paid_broadcast = null,
+        ?string $message_effect_id = null,
+        ?ReplyParameters $reply_parameters = null,
+        ReplyKeyboardRemove|ForceReply|InlineKeyboardMarkup|ReplyKeyboardMarkup|null $reply_markup = null
+    ): Message {
+        return Message::from($this->call('sendSharedWidget', [
+            'chat_id' => $chat_id,
+            'widget_id' => $widget_id,
+            'message_thread_id' => $message_thread_id,
+            'chat_data' => $chat_data,
+            'caption' => $caption,
+            'parse_mode' => $parse_mode,
+            'caption_entities' => $caption_entities,
+            'show_caption_above_media' => $show_caption_above_media,
+            'disable_notification' => $disable_notification,
+            'protect_content' => $protect_content,
+            'allow_paid_broadcast' => $allow_paid_broadcast,
+            'message_effect_id' => $message_effect_id,
             'reply_parameters' => $reply_parameters,
             'reply_markup' => $reply_markup,
         ]));
@@ -655,10 +735,10 @@ trait AvailableMethodsTrait
     }
 
     public function sendLocation(
-        int|string $chat_id,
         float $latitude,
         float $longitude,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -675,10 +755,10 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendLocation', [
-            'chat_id' => $chat_id,
             'latitude' => $latitude,
             'longitude' => $longitude,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -697,12 +777,12 @@ trait AvailableMethodsTrait
     }
 
     public function sendVenue(
-        int|string $chat_id,
         float $latitude,
         float $longitude,
         string $title,
         string $address,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -719,12 +799,12 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendVenue', [
-            'chat_id' => $chat_id,
             'latitude' => $latitude,
             'longitude' => $longitude,
             'title' => $title,
             'address' => $address,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -743,10 +823,10 @@ trait AvailableMethodsTrait
     }
 
     public function sendContact(
-        int|string $chat_id,
         string $phone_number,
         string $first_name,
         ?string $business_connection_id = null,
+        int|string|null $chat_id = null,
         ?int $message_thread_id = null,
         ?int $direct_messages_topic_id = null,
         ?EphemeralMessageParameters $ephemeral_message_parameters = null,
@@ -761,10 +841,10 @@ trait AvailableMethodsTrait
         InlineKeyboardMarkup|ReplyKeyboardMarkup|ReplyKeyboardRemove|ForceReply|null $reply_markup = null,
     ): Message {
         return Message::from($this->call('sendContact', [
-            'chat_id' => $chat_id,
             'phone_number' => $phone_number,
             'first_name' => $first_name,
             'business_connection_id' => $business_connection_id,
+            'chat_id' => $chat_id,
             'message_thread_id' => $message_thread_id,
             'direct_messages_topic_id' => $direct_messages_topic_id,
             'ephemeral_message_parameters' => $ephemeral_message_parameters,
@@ -1354,6 +1434,11 @@ trait AvailableMethodsTrait
         };
     }
 
+    public function getChatShareThemeBackdrops(): ChatShareThemeBackdrops
+    {
+        return ChatShareThemeBackdrops::from($this->call('getChatShareThemeBackdrops'));
+    }
+
     public function getUserPersonalChatMessages(int $user_id, int $limit): array
     {
         return Message::collect(
@@ -1500,6 +1585,14 @@ trait AvailableMethodsTrait
             'show_alert' => $show_alert,
             'url' => $url,
             'cache_time' => $cache_time,
+        ]);
+    }
+
+    public function answerWidgetQuery(string $widget_query_id, ?string $data = null): true
+    {
+        return $this->call('answerWidgetQuery', [
+            'widget_query_id' => $widget_query_id,
+            'data' => $data,
         ]);
     }
 
@@ -1728,19 +1821,31 @@ trait AvailableMethodsTrait
         ]);
     }
 
-    public function verifyUser(int $user_id, ?string $custom_description = null): true
-    {
+    public function verifyUser(
+        int $user_id,
+        ?string $custom_description = null,
+        ?string $custom_description_parse_mode = null,
+        ?array $custom_description_entities = null,
+    ): true {
         return $this->call('verifyUser', [
             'user_id' => $user_id,
             'custom_description' => $custom_description,
+            'custom_description_parse_mode' => $custom_description_parse_mode,
+            'custom_description_entities' => $custom_description_entities,
         ]);
     }
 
-    public function verifyChat(int|string $chat_id, ?string $custom_description = null): true
-    {
+    public function verifyChat(
+        int|string $chat_id,
+        ?string $custom_description = null,
+        ?string $custom_description_parse_mode = null,
+        ?array $custom_description_entities = null,
+    ): true {
         return $this->call('verifyChat', [
             'chat_id' => $chat_id,
             'custom_description' => $custom_description,
+            'custom_description_parse_mode' => $custom_description_parse_mode,
+            'custom_description_entities' => $custom_description_entities,
         ]);
     }
 
@@ -1930,6 +2035,13 @@ trait AvailableMethodsTrait
         ]));
     }
 
+    public function getUniqueGift(string $name): UniqueGift
+    {
+        return UniqueGift::from($this->call('getUniqueGift', [
+            'name' => $name,
+        ]));
+    }
+
     public function convertGiftToStars(string $business_connection_id, string $owned_gift_id): true
     {
         return $this->call('convertGiftToStars', [
@@ -1963,6 +2075,14 @@ trait AvailableMethodsTrait
             'owned_gift_id' => $owned_gift_id,
             'new_owner_chat_id' => $new_owner_chat_id,
             'star_count' => $star_count,
+        ]);
+    }
+
+    public function deleteBusinessAccountGift(string $business_connection_id, string $owned_gift_id): true
+    {
+        return $this->call('deleteBusinessAccountGift', [
+            'business_connection_id' => $business_connection_id,
+            'owned_gift_id' => $owned_gift_id,
         ]);
     }
 

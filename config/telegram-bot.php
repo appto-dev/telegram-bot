@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\MyBot\MyBot;
+use App\Bots\MyBot\MyBot;
 use GuzzleHttp\RequestOptions;
 
 return [

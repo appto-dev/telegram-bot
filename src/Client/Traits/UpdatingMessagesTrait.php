@@ -335,4 +335,24 @@ trait UpdatingMessagesTrait
             'actor_chat_id' => $actor_chat_id,
         ]);
     }
+
+    public function editMessageWidgetData(int|string|null $chat_id = null, ?int $message_id = null, ?string $inline_message_id = null, ?string $public_data = null, ?string $chat_data = null): true
+    {
+        return $this->call('editMessageWidgetData', [
+            'chat_id' => $chat_id,
+            'message_id' => $message_id,
+            'inline_message_id' => $inline_message_id,
+            'public_data' => $public_data,
+            'chat_data' => $chat_data,
+        ]);
+    }
+
+    public function editSharedWidgetData(string $widget_id, string $public_data, ?int $cache_time = null): true
+    {
+        return $this->call('editSharedWidgetData', [
+            'widget_id' => $widget_id,
+            'public_data' => $public_data,
+            'cache_time' => $cache_time,
+        ]);
+    }
 }

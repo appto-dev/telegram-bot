@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Bot API 10.4 client methods: `sendWidget()`, `sendSharedWidget()`, `answerWidgetQuery()`,
+  `getChatShareThemeBackdrops()`, `getUniqueGift()`, `deleteBusinessAccountGift()`,
+  `editMessageWidgetData()`, `editSharedWidgetData()`.
+
+### Changed
+
+- Bot API method signatures now follow the 10.4 schema: `chat_id` is optional in message-sending
+  methods and the named-argument order matches the API spec.
+
 ## [0.6.0] - 2026-10-10
 
 ### Added
